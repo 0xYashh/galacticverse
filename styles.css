@@ -201,6 +201,7 @@ body {
       grid-template-columns: 1fr;
   }
   .explore-content p{
+    text-align: justify;
     font-size: 15px;
   }
   
