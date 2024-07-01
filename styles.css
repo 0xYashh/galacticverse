@@ -114,7 +114,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
-  padding: 20px;
+  padding: 0px;
   align-items: flex-start;
 }
 
