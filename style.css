@@ -76,6 +76,7 @@ a:hover {
 .explore-section {
   color: white;
   margin-bottom: 30px;
+  text-align: justify;
   /* border: 1px solid rgb(145, 49, 225); */
   padding: 20px;
   border-radius: 5px;
