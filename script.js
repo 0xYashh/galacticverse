@@ -11,3 +11,7 @@
             window.location.href = 'hq/g-hq.html';
         }
         
+        function goToGalacticLab() 
+        {
+            window.location.href = 'lab/g-lab.html'
+        }

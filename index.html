@@ -4,32 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galacticverse</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
-    <link href="https://api.fontshare.com/v2/css?f[]=recia@300&f[]=switzer@300&f[]=clash-display@1&f[]=nippo@300&f[]=clash-grotesk@400&f[]=jet-brains-mono@200&f[]=poppins@200,201,400&f[]=sharpie@300,400&f[]=satoshi@300,401,500,701&f[]=supreme@200&f[]=bespoke-slab@300&f[]=panchang@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
 </head>
 <body>
     <header>
-        <nav class="nav-bar">
-            <ul>
-                <li class="logo"><a href="/index.html">galacticverse</a></li>
-            </ul>
-        </nav>
+        <a href="#" class="logo">galactica</a>
     </header>
-    <main>
-        <section class="main-section">
-            <div class="main-content">
-                <h3>welcome to galacticverse.</h3>
-                <p>a place to innovate, craft and share your intergalactic vision.</p>
-                <div class="buttons">
-                    <button class="button" onclick="goToExplore()">explore us</button>
-                    <button class="button" onclick="goToJoin()">join us</button>
-                </div>
-            </div>
-            <div class="image">
-                <img class="image-h1" src="/img/frens in space.jpg" alt="Five Friends">
-            </div>
-        </section>
+
+    <main class="main-section">
+        <div class="main-content">
+            <h1>welcome to galactica.</h1>
+            <p>a place to innovate, craft and share your intergalactic vision.</p>
+            <button class="button" onclick="goToExplore()">explore us</button>
+            <button class="button" onclick="goToJoin()">join us</button>
+        </div>
+        <div class="image-container">
+            <img class="image" src="/img/frens in space.jpg" alt="Five Friends">
+        </div>
     </main>
+
+
 </body>
+<script>
+    function goToExplore() {
+        window.location.href = 'explore/explore.html';
+    }
+    function goToJoin() {
+        window.location.href = 'https://forms.fillout.com/t/fPhFpj5KdNus'
+    }
+</script>
 </html>

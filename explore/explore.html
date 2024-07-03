@@ -3,37 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>explore us</title>
-    <link rel="stylesheet" href="/styles.css">
-    <script src="script.js"></script>
-    <link href="https://api.fontshare.com/v2/css?f[]=recia@300&f[]=switzer@300&f[]=clash-display@1&f[]=nippo@300&f[]=clash-grotesk@400&f[]=jet-brains-mono@200&f[]=poppins@200,201,400&f[]=sharpie@300,400&f[]=satoshi@300,401,500,701&f[]=supreme@200&f[]=bespoke-slab@300&f[]=panchang@500&display=swap" rel="stylesheet">
+    <title>explore us - Galacticverse</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <header>
-        <nav class="nav-bar">
-            <ul>
-                <li class="logo"><a href="/index.html">galacticverse</a></li>
-            </ul>
-        </nav>
+        <a href="index.html" class="logo">galactica</a>
     </header>
-    <section class="explore-section">
-        <div class="explore-content">
-            <h2>wtf is galacticverse?</h2>
-            <p class="intro">galacticverse is an exciting place where people who love space and technology can come together. you can choose planets, build cities, and explore new ideas like how civilizations could grow across different galaxies. It's a place where everyone can join in to create and explore amazing things together and engage in discussion on topics like the Kardashev Scale, multiverse theory, time paradoxes, artificial intelligence, future technologies, extraterrestrial life, and more.</p>
-            <button class="button" onclick="goToGalacticHQ()">galacticverse hq</button>
-            <hr class="custom-hr">
-            <div class="community-section">
-                <h3>>our intergalactic community</h3>
-                <p>meet a squad of space geeks, techies, and dreamers. <br>we vibe on doing research , crafting cool tech, and exploring the universe together.<br>connect, collab, and create epic stuff in our community.</p>
-                <ul class="community-features">
-                    <li>contribute in building the intergalactic empire</li>
-                    <li>galactic forums : discussions on futuristic tech</li>
-                    <li>cosmic creativity challenges</li>
-                    <li>get the intergalactic pass.</li>
-                </ul>
-            </div>
-        </div>
 
-    </section>
+    <main>
+        <section class="explore-section">
+            <h1>wtf is galacticverse?</h1>
+            <p>galacticverse is an exciting place where people who love space and technology can come together. you can choose planets, build cities, and explore new ideas like how civilizations could grow across different galaxies. It's a place where everyone can join in to create and explore amazing things together and engage in discussion on topics like the Kardashev Scale, multiverse theory, time paradoxes, artificial intelligence, future technologies, extraterrestrial life, and more.</p>
+            <button class="button" onclick="goToGalacticHQ()">galacticverse hq</button>
+            <button class="button" onclick="goToGalacticLab()">galactic lab</button>
+    
+
+            <h2>the intergalactic community</h2>
+            <p>meet a squad of space geeks, techies, and dreamers. we vibe on doing research, crafting cool tech, and exploring the universe together. connect, collab, and create epic stuff in our community.</p>
+            <ul class="community-features">
+                <li>contribute in building the intergalactic empire</li>
+                <li>galactic forums : discussions on futuristic tech</li>
+                <li>cosmic creativity challenges</li>
+                <li>get the intergalactic pass.</li>
+            </ul>
+        </section>
+   
+    </main>
+
+    <script>
+        function goToGalacticHQ() {
+            window.location.href = '/hq/g-hq.html';
+        }
+        function goToGalacticLab() {
+            window.location.href = '/lab/g-lab.html';
+        }
+    </script>
 </body>
 </html>
