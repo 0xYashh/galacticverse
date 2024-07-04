@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Image of the Day - Galactica Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+        body {
+            background-color: #000;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont";
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #fff;
+        }
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+        #apod-image {
+            width: 350px;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+        #apod-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        #loading, #error {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <a href="/index.html">[home]</a>
+    <a href="/index.html">[galactica lab]</a>
+
+    <h2>Galactic Image of the Day</h2>
+    <div id="apod-container">
+        <p id="loading">Loading Galactic Image of the Day...</p>
+        <p id="error" style="display: none;">Failed to load Galactic Image of the Day. Please try again later.</p>
+        <img id="apod-image" src="" alt="Astronomy Picture of the Day" style="display: none;">
+        <p id="apod-title"></p>
+        <p id="apod-date"></p>
+        <p id="apod-explanation"></p>
+    </div>
+
+    <script>
+        async function fetchAPOD() {
+            const apiKey = 'ksWndvTSPqnMThpAH764jbZHGl7x79WtKsDHbCft'; 
+            const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                document.getElementById('apod-image').src = data.url;
+                document.getElementById('apod-image').style.display = 'block';
+                document.getElementById('apod-title').textContent = data.title;
+                document.getElementById('apod-date').textContent = `Date: ${data.date}`;
+                document.getElementById('apod-explanation').textContent = data.explanation;
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('Error fetching APOD:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        fetchAPOD();
+    </script>
+</body>
+</html>
