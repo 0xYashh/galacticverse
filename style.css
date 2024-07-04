@@ -50,7 +50,7 @@ body {
 .main-content ul li a {
   color: rgb(169, 94, 255);
   font-size: 2.2rem;
-  font-weight: 700;
+  font-weight: 600;
   font-family: "NB International Regular Webfont";
   text-decoration: none;
   transition: color 0.3s ease;
@@ -79,16 +79,19 @@ body {
     border-radius: 5px;
 }
 
-.explore-section h1 {
+.explore-section h1{
   font-family: "NB International Regular Webfont";
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
+.explore-section h2{
+  font-family: "NB International Regular Webfont";
 
+}
 .explore-section p {
   font-family: "NB International Regular Webfont";
-    font-size: 0.7rem;
-    line-height: 1.8;
+    font-size: 1rem;
+    line-height: 1.0;
     margin-bottom: 10px; 
 }
 
@@ -119,12 +122,14 @@ body {
 }
 
 .community-features {
+   font-family: "NB International Regular Webfont";
     list-style-type: none;
     padding-left: 0;
     margin-top: 20px; /* Added margin to separate list from previous content */
 }
 
 .community-features li::before {
+    font-family: "NB International Regular Webfont";
     content: "> ";
     color: rgb(247, 159, 255);
 }
