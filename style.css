@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
 body {
   background-color: #000;
   color: rgb(255, 255, 255);
-  font-family: 'Satoshi', 'Courier New', monospace;
+  /* font-family: 'Satoshi', 'Courier New', monospace; */
   line-height: 1.6;
   padding: 20px;
   max-width: 1200px;
@@ -31,7 +32,7 @@ body {
 }
 
 .main-content p {
-  font-family: 'hepta slab', sans-serif;
+  font-family: "NB International Regular Webfont";
   font-size: 1.8rem;
   color: rgb(180, 180, 180);
   margin-bottom: 40px;
@@ -50,7 +51,7 @@ body {
   color: rgb(169, 94, 255);
   font-size: 2.2rem;
   font-weight: 700;
-  font-family: 'hepta slab', sans-serif;
+  font-family: "NB International Regular Webfont";
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -60,7 +61,7 @@ body {
 }
 
 .social-handles a {
-  font-family: 'hepta slab', sans-serif;
+  font-family: "NB International Regular Webfont";
   text-decoration: none;
   font-size: 1.8rem;
   color: rgb(215, 128, 255);
@@ -69,20 +70,6 @@ body {
 
 .social-handles a:hover {
   color: rgb(161, 103, 255);
-}
-@import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
-
-body {
-    background-color: #000;
-    color: rgb(255, 255, 255);
-    font-family: 'Satoshi', 'Courier New', monospace;
-    line-height: 1.6;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 .explore-section {
@@ -93,12 +80,13 @@ body {
 }
 
 .explore-section h1 {
+  font-family: "NB International Regular Webfont";
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
 .explore-section p {
-    font-family: 'Hepta Slab', serif;
+  font-family: "NB International Regular Webfont";
     font-size: 0.7rem;
     line-height: 1.8;
     margin-bottom: 10px; 
@@ -119,7 +107,7 @@ body {
     padding: 12px 24px;
     margin: 10px;
     cursor: pointer;
-    font-family: 'Rokkitt', monospace;
+    font-family: "NB International Regular Webfont";
     font-size: 1.2rem;
     font-weight: bold;
     transition: all 0.3s ease;
