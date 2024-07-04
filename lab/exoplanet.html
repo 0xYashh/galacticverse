@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-    <a href="/index.html">[home]</a>
+    <a href="index.html">[home]</a>
     <h1>galactica lab.</h1>
     <h2>Exoplanet Explorer</h2>
     <div id="exoplanet-container">
@@ -47,23 +47,31 @@
 
     <script>
         async function fetchExoplanetData() {
-            const apiKey = 'ksWndvTSPqnMThpAH764jbZHGl7x79WtKsDHbCft'; // Replace with your actual NASA API key
-            const apiUrl = `https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?api_key=${apiKey}&table=exoplanets&format=json&where=pl_kepflag=1&order=pl_orbper&select=pl_name,pl_orbper,pl_rade,pl_masse,pl_eqt&select=pl_name,pl_orbper,pl_rade,pl_masse,pl_eqt&limit=5`;
+            const csvUrl = 'https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,pl_orbper,pl_rade,pl_bmasse,pl_eqt+from+ps+where+default_flag=1+order+by+pl_orbper+asc&format=csv';
 
             try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                
+                const response = await fetch(csvUrl);
+                const csvData = await response.text();
+                const lines = csvData.split('\n');
+                const headers = lines[0].split(',');
+                const planets = lines.slice(1, 6).map(line => {
+                    const values = line.split(',');
+                    return headers.reduce((obj, header, index) => {
+                        obj[header] = values[index];
+                        return obj;
+                    }, {});
+                });
+
                 const infoDiv = document.getElementById('exoplanet-info');
-                infoDiv.innerHTML = '<h3>Top 5 Kepler Exoplanets:</h3>';
-                data.forEach(planet => {
+                infoDiv.innerHTML = '<h3>Top 5 Exoplanets (Sorted by Orbital Period):</h3>';
+                planets.forEach(planet => {
                     infoDiv.innerHTML += `
                         <p>
                             <strong>${planet.pl_name}</strong><br>
-                            Orbital Period: ${planet.pl_orbper} days<br>
-                            Radius: ${planet.pl_rade} Earth radii<br>
-                            Mass: ${planet.pl_masse || 'Unknown'} Earth masses<br>
-                            Equilibrium Temperature: ${planet.pl_eqt || 'Unknown'} K
+                            Orbital Period: ${parseFloat(planet.pl_orbper).toFixed(2)} days<br>
+                            Radius: ${planet.pl_rade ? parseFloat(planet.pl_rade).toFixed(2) + ' Earth radii' : 'Unknown'}<br>
+                            Mass: ${planet.pl_bmasse ? parseFloat(planet.pl_bmasse).toFixed(2) + ' Earth masses' : 'Unknown'}<br>
+                            Equilibrium Temperature: ${planet.pl_eqt ? parseFloat(planet.pl_eqt).toFixed(0) + ' K' : 'Unknown'}
                         </p>
                     `;
                 });

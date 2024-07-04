@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arXiv Papers - Galactica Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+        body {
+            background: black;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont";
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #fff;
+        }
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+        .paper {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .paper h3 {
+            margin-bottom: 5px;
+        }
+        .paper .authors {
+            font-style: italic;
+            color: #888;
+        }
+        #searchForm {
+            margin-bottom: 20px;
+        }
+        #searchTerm {
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 5px 10px;
+        }
+        #searchButton {
+            background: rgb(195, 122, 255);
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #searchButton:hover {
+            background: rgb(215, 166, 252);
+        }
+    </style>
+</head>
+<body>
+    <a href="/index.html">[home]</a>
+    <a href="/lab/g-lab.html">[galactica lab]</a>
+    <h1>arXiv Papers - Galactica Lab</h1>
+    
+    <div id="searchForm">
+        <input type="text" id="searchTerm" placeholder="Enter search term">
+        <button id="searchButton">Search</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('searchButton').addEventListener('click', searchArXiv);
+
+        function searchArXiv() {
+            const searchTerm = document.getElementById('searchTerm').value;
+            const apiUrl = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(searchTerm)}&start=0&max_results=10`;
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+                .then(data => {
+                    const entries = data.getElementsByTagName('entry');
+                    let html = '';
+                    
+                    for (let entry of entries) {
+                        const title = entry.getElementsByTagName('title')[0].textContent;
+                        const authors = Array.from(entry.getElementsByTagName('author'))
+                            .map(author => author.getElementsByTagName('name')[0].textContent)
+                            .join(', ');
+                        const summary = entry.getElementsByTagName('summary')[0].textContent;
+                        const link = entry.getElementsByTagName('id')[0].textContent;
+
+                        html += `
+                            <div class="paper">
+                                <h3><a href="${link}" target="_blank">${title}</a></h3>
+                                <p class="authors">${authors}</p>
+                                <p>${summary.substring(0, 200)}...</p>
+                            </div>
+                        `;
+                    }
+
+                    document.getElementById('results').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('results').innerHTML = 'An error occurred while fetching data.';
+                });
+        }
+    </script>
+</body>
+</html>
