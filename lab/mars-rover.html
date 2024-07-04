@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars Rover Latest Photo - Galactica Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+        body {
+            background-color: #000;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont";
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #fff;
+        }
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+        #mars-image {
+            width: 350px;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+        #mars-info {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        #loading, #error {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html">[home]</a>
+    <a href="/lab/g-lab.html">[galactica lab]</a>
+    <h2>Mars Rover Latest Photo</h2>
+    <div id="mars-container">
+        <p id="loading">Loading latest Mars Rover photo...</p>
+        <p id="error" style="display: none;">Failed to load Mars Rover photo. Please try again later.</p>
+        <img id="mars-image" src="" alt="Latest Mars Rover Photo" style="display: none;">
+        <p id="mars-info"></p>
+        <p id="mars-date"></p>
+    </div>
+
+    <script>
+        async function fetchMarsPhoto() {
+            const apiKey = 'ksWndvTSPqnMThpAH764jbZHGl7x79WtKsDHbCft'; // Replace with your actual NASA API key
+            const apiUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const latestPhoto = data.latest_photos[0];
+
+                document.getElementById('mars-image').src = latestPhoto.img_src;
+                document.getElementById('mars-image').style.display = 'block';
+                document.getElementById('mars-info').textContent = `Rover: ${latestPhoto.rover.name}, Camera: ${latestPhoto.camera.full_name}`;
+                document.getElementById('mars-date').textContent = `Earth Date: ${latestPhoto.earth_date}`;
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('Error fetching Mars photo:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        fetchMarsPhoto();
+    </script>
+</body>
+</html>
