@@ -47,7 +47,7 @@ body {
 }
 
 .main-content ul li a {
-  color: rgb(161, 103, 255);
+  color: rgb(169, 94, 255);
   font-size: 2.2rem;
   font-weight: 700;
   font-family: 'hepta slab', sans-serif;
@@ -115,7 +115,7 @@ body {
 .button {
     background-color: rgb(0, 0, 0);
     color: #ffffff;
-    border: 2px solid rgb(145, 49, 225);
+    border: 2px solid rgb(169, 94, 255);
     padding: 12px 24px;
     margin: 10px;
     cursor: pointer;
@@ -126,7 +126,7 @@ body {
 }
 
 .button:hover {
-    color: rgb(145, 49, 255);
+    color: rgb(169, 94, 255);
     box-shadow: 0 0 10px rgb(243, 119, 231);
 }
 
