@@ -24,7 +24,7 @@
 
         function searchADS() {
             const searchTerm = document.getElementById('searchTerm').value;
-            const apiKey = 'lb0s8LiiFzvPtWZDr28KK1jGz48Fpadktqq9yTds'; // You need to replace this with your actual ADS API key
+            const apiKey = 'YOUR_ADS_API_KEY'; // You need to replace this with your actual ADS API key
             const apiUrl = `https://api.adsabs.harvard.edu/v1/search/query?q=${encodeURIComponent(searchTerm)}&fl=title,author,abstract,bibcode&rows=25`;
 
             fetch(apiUrl, {
