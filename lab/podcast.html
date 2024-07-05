@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
         @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+
         body {
             background: black;
             color: rgb(255, 255, 255);
@@ -16,17 +18,24 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3,
+        h4 {
             color: #fff;
         }
+
         a {
             color: rgb(195, 122, 255);
             text-decoration: none;
         }
+
         a:hover {
             color: rgb(215, 166, 252);
             text-decoration: underline;
         }
+
         .podcast-category {
             margin-bottom: 20px;
             border: 1px solid rgba(195, 122, 255, 0.3);
@@ -34,150 +43,174 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .podcast-category:hover {
             background-color: rgba(195, 122, 255, 0.1);
         }
+
         .podcast-list {
             display: none;
             margin-top: 10px;
         }
+
         .podcast-item {
             margin-bottom: 10px;
             padding-bottom: 10px;
             border-bottom: 1px solid rgba(195, 122, 255, 0.3);
         }
+
         .podcast-item:last-child {
             border-bottom: none;
         }
+
         .podcast-links a {
             margin-right: 10px;
         }
     </style>
 </head>
+
 <body>
     <a href="/index.html">[home]</a>
     <a href="/hq/g-hq.html">[galactica-hq]</a>
     <a href="/hq/g-hq.html">[galactica-lab]</a>
 
 
-    <h1>space exploration podcasts</h1>
+    <h1>Podcasts</h1>
+    <h4>podcasts you might like:</h4>
 
     <div id="podcastCategories">
     </div>
 
     <script>
-        const podcastData = [
+const podcastData = [
+    {
+        category: "Lex Fridman Podcast",
+        description: "Conversations about science, technology, history, philosophy and the nature of intelligence, consciousness, love, and power.",
+        podcasts: [
             {
-                category: "Lex Fridman Podcast",
-                description: "Conversations about science, technology, history, philosophy and the nature of intelligence, consciousness, love, and power.",
-                podcasts: [
-                    {
-                        title: "Michio Kaku: Future of Humans, Aliens, Space Travel & Physics",
-                        youtubeLink: "https://www.youtube.com/watch?v=kD5yc1LQrpQ",
-                        appleLink: "https://podcasts.apple.com/us/podcast/michio-kaku-future-of-humans-aliens-space-travel-physics/id1434243584?i=1000507485312"
-                    
-                    },
-                    {
-                        title:'Marc Andreessen: Future of the Internet, Technology, and AI',
-                        youtubeLink:'https://www.youtube.com/watch?v=-hxeDjAxvJ8&t=492s',
-                        appleLink:'https://podcasts.apple.com/us/podcast/lex-fridman-podcast/id1434243584'
-
-                    },
-                    {
-                        title: "Brian Greene: Quantum Gravity, The Big Bang, Aliens, Death, and Meaning",
-                        youtubeLink: "https://www.youtube.com/watch?v=98HZanvAJ8Y",
-                        appleLink: "https://podcasts.apple.com/us/podcast/brian-greene-quantum-gravity-the-big-bang-aliens-death/id1434243584?i=1000558691983"
-                    }
-                ]
+                title: "Michio Kaku: Future of Humans, Aliens, Space Travel & Physics",
+                youtubeLink: "https://www.youtube.com/watch?v=kD5yc1LQrpQ",
+                appleLink: "https://podcasts.apple.com/us/podcast/michio-kaku-future-of-humans-aliens-space-travel-physics/id1434243584?i=1000507485312"
             },
             {
-                category: "Joe Rogan Experience",
-                description: "The Joe Rogan Experience podcast is a long form conversation hosted by comedian Joe Rogan with friends and guests that have included comedians, actors, musicians, MMA fighters, authors, artists, and beyond.",
-                podcasts: [
-                    {
-                        title: "#1631 - Neil deGrasse Tyson",
-                        youtubeLink: "https://www.youtube.com/watch?v=0pmviUS1Zac",
-                        appleLink: "https://podcasts.apple.com/us/podcast/1631-neil-degrasse-tyson/id360084272?i=1000538504635"
-                    },
-                    {
-                        title: "#1609 - Elon Musk",
-                        youtubeLink: "https://www.youtube.com/watch?v=RcYjXbSJBN8",
-                        appleLink: "https://podcasts.apple.com/us/podcast/1609-elon-musk/id360084272?i=1000529433347"
-                    }
-                ]
+                title: 'Marc Andreessen: Future of the Internet, Technology, and AI',
+                youtubeLink: 'https://www.youtube.com/watch?v=-hxeDjAxvJ8&t=492s',
+                appleLink: 'https://podcasts.apple.com/us/podcast/lex-fridman-podcast/id1434243584'
+            },
+            {
+                title: "Brian Greene: Quantum Gravity, The Big Bang, Aliens, Death, and Meaning",
+                youtubeLink: "https://www.youtube.com/watch?v=98HZanvAJ8Y",
+                appleLink: "https://podcasts.apple.com/us/podcast/brian-greene-quantum-gravity-the-big-bang-aliens-death/id1434243584?i=1000558691983"
+            },
+            {
+                title: "Sam Altman: OpenAI, GPT-5, Sora, Board Saga, Elon Musk, Ilya, Power & AGI",
+                youtubeLink: "https://www.youtube.com/watch?v=jvqFAi7vkBc&list=PLrAXtmErZgOdP_8GztsuKi9nrraNbKKp4&index=18",
+                appleLink: "https://podcasts.apple.com/us/podcast/lex-fridman-podcast/id1434243584"
             }
-        ];
+        ]
+    },
+    {
+        category: "WTF by Nikhil Kamath",
+        description: "WTF is is a podcast series where Nikhil Kamath hosts friends and industry experts and holds casual yet intellectually stimulating conversations. The podcast covers a broad range of topics of particular current relevance, including technology, social media, renewable energy, electric vehicles, philosophy, gaming, psychology and more.",
+        podcasts: [
+            {
+                title: "WTF is the Next Gen Thinking? Nikhil w/ Navya, Tara, Aadit & Kaivalya",
+                youtubeLink: "https://www.youtube.com/watch?v=nGpir4oUfJI&list=PLVPkbpccdn98Mb43hFbfxXHRLQxAS4tyU&index=10&t=639s",
+                spotifyLink: "https://open.spotify.com/episode/0JPCua3dy2WblYr1BDCfEd"
+            },
+            {
+                title: " WTF is Gaming in India? | Career, Investment, Entrepreneurship",
+                youtubeLink: "https://www.youtube.com/watch?v=VIlfHB7Jk2s",
+                spotifyLink: "https://open.spotify.com/episode/4nVE1kXotlaNulW0oA3e9l"
+            },
+            {
+                title: "WTF is Happening with EV? Nikhil ft. Founders of Reva, Ather, Blusmart, and Ossus",
+                youtubeLink: "https://www.youtube.com/watch?v=iuyy1bIgR1s&t=5s",
+                spotifyLink: "https://open.spotify.com/episode/0OUThPWRffTrISpwmlDK0s"
+            }
+        ]
+    },
+    {
+        category: "Joe Rogan Experience",
+        description: "The Joe Rogan Experience podcast is a long form conversation hosted by comedian Joe Rogan with friends and guests that have included comedians, actors, musicians, MMA fighters, authors, artists, and beyond.",
+        podcasts: [
+            {
+                title: "#1631 - Neil deGrasse Tyson",
+                youtubeLink: "https://www.youtube.com/watch?v=0pmviUS1Zac",
+                appleLink: "https://podcasts.apple.com/us/podcast/1631-neil-degrasse-tyson/id360084272?i=1000538504635"
+            },
+            {
+                title: "#1609 - Elon Musk",
+                youtubeLink: "https://www.youtube.com/watch?v=RcYjXbSJBN8",
+                appleLink: "https://podcasts.apple.com/us/podcast/1609-elon-musk/id360084272?i=1000529433347"
+            }
+        ]
+    }
+];
 
-        const podcastCategories = document.getElementById('podcastCategories');
+const podcastCategories = document.getElementById('podcastCategories');
 
-        podcastData.forEach(category => {
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'podcast-category';
-            categoryDiv.innerHTML = `
-                <h2>${category.category}</h2>
-                <p>${category.description}</p>
-                <div class="podcast-list">
-                    ${category.podcasts.map(podcast => `
-                        <div class="podcast-item">
-                            <h3>${podcast.title}</h3>
-                            <div class="podcast-links">
-                                <a href="${podcast.youtubeLink}" target="_blank">YouTube</a>
-                                <a href="${podcast.appleLink}" target="_blank">Apple Podcasts</a>
-                            </div>
-                        </div>
-                    `).join('')}
+podcastData.forEach(category => {
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'podcast-category';
+    categoryDiv.innerHTML = `
+        <h2>${category.category}</h2>
+        <p>${category.description}</p>
+        <div class="podcast-list">
+            ${category.podcasts.map(podcast => `
+                <div class="podcast-item">
+                    <h3>${podcast.title}</h3>
+                    <div class="podcast-links">
+                        <a href="${podcast.youtubeLink}" target="_blank">YouTube</a>
+                        ${podcast.spotifyLink ? `<a href="${podcast.spotifyLink}" target="_blank">Spotify</a>` : ''}
+                        ${podcast.appleLink ? `<a href="${podcast.appleLink}" target="_blank">Apple Podcasts</a>` : ''}
+                    </div>
                 </div>
-            `;
-            podcastCategories.appendChild(categoryDiv);
+            `).join('')}
+        </div>
+    `;
+    podcastCategories.appendChild(categoryDiv);
 
-            categoryDiv.addEventListener('click', function() {
-                const podcastList = this.querySelector('.podcast-list');
-                podcastList.style.display = podcastList.style.display === 'none' ? 'block' : 'none';
-            });
-        });
+    categoryDiv.addEventListener('click', function() {
+        const podcastList = this.querySelector('.podcast-list');
+        podcastList.style.display = podcastList.style.display === 'none' ? 'block' : 'none';
+    });
+});
 
-        // Template for adding new podcast categories
-        function addPodcastCategory(category, description, podcasts) {
-            const newCategory = {
-                category: category,
-                description: description,
-                podcasts: podcasts
-            };
-            podcastData.push(newCategory);
+function addPodcastCategory(category, description, podcasts) {
+    const newCategory = {
+        category: category,
+        description: description,
+        podcasts: podcasts
+    };
+    podcastData.push(newCategory);
 
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'podcast-category';
-            categoryDiv.innerHTML = `
-                <h2>${newCategory.category}</h2>
-                <p>${newCategory.description}</p>
-                <div class="podcast-list">
-                    ${newCategory.podcasts.map(podcast => `
-                        <div class="podcast-item">
-                            <h3>${podcast.title}</h3>
-                            <div class="podcast-links">
-                                <a href="${podcast.youtubeLink}" target="_blank">YouTube</a>
-                                <a href="${podcast.appleLink}" target="_blank">Apple Podcasts</a>
-                            </div>
-                        </div>
-                    `).join('')}
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'podcast-category';
+    categoryDiv.innerHTML = `
+        <h2>${newCategory.category}</h2>
+        <p>${newCategory.description}</p>
+        <div class="podcast-list">
+            ${newCategory.podcasts.map(podcast => `
+                <div class="podcast-item">
+                    <h3>${podcast.title}</h3>
+                    <div class="podcast-links">
+                        <a href="${podcast.youtubeLink}" target="_blank">YouTube</a>
+                        ${podcast.spotifyLink ? `<a href="${podcast.spotifyLink}" target="_blank">Spotify</a>` : ''}
+                        ${podcast.appleLink ? `<a href="${podcast.appleLink}" target="_blank">Apple Podcasts</a>` : ''}
+                    </div>
                 </div>
-            `;
-            podcastCategories.appendChild(categoryDiv);
+            `).join('')}
+        </div>
+    `;
+    podcastCategories.appendChild(categoryDiv);
 
-            categoryDiv.addEventListener('click', function() {
-                const podcastList = this.querySelector('.podcast-list');
-                podcastList.style.display = podcastList.style.display === 'none' ? 'block' : 'none';
-            });
-        }
-
-        // Example usage of the template
-        // addPodcastCategory("New Podcast", "Description of the new podcast", [
-        //     {
-        //         title: "Episode Title",
-        //         youtubeLink: "https://youtube.com/...",
-        //         appleLink: "https://podcasts.apple.com/..."
-        //     }
-        // ]);
+    categoryDiv.addEventListener('click', function() {
+        const podcastList = this.querySelector('.podcast-list');
+        podcastList.style.display = podcastList.style.display === 'none' ? 'block' : 'none';
+    });
+}
     </script>
 </body>
+
 </html>
