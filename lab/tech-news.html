@@ -31,6 +31,17 @@
             margin-bottom: 30px;
             border-bottom: 1px solid #333;
             padding-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .news-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        .news-content {
+            flex: 1;
         }
         .news-title {
             font-size: 1.2em;
@@ -62,49 +73,46 @@
     </div>
 
     <script>
-        async function fetchNews() {
-            try {
-                const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
-                const storyIds = await response.json();
-                const top15StoryIds = storyIds.slice(0, 15);  // Get top 15 stories
+    async function fetchNews() {
+        const apiKey = '521170e0d7a74675b458d18288b112a6';
+        const url = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${apiKey}`;
 
-                const storyPromises = top15StoryIds.map(id =>
-                    fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(res => res.json())
-                );
-                const stories = await Promise.all(storyPromises);
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const newsContainer = document.getElementById('news-container');
 
-                const newsContainer = document.getElementById('news-container');
-                stories.forEach(story => {
+            if (data.articles && data.articles.length > 0) {
+                data.articles.forEach(article => {
                     const storyElement = document.createElement('div');
                     storyElement.className = 'news-item';
                     
-                    // Fetch the story text if it's available
-                    let storyText = '';
-                    if (story.text) {
-                        storyText = `<div class="news-text">${story.text.substring(0, 200)}...</div>`;
-                    }
-                    
                     storyElement.innerHTML = `
-                        <div class="news-title"><a href="${story.url}" target="_blank">${story.title}</a></div>
-                        <div class="news-meta">
-                            by ${story.by} | ${story.score} points | ${new Date(story.time * 1000).toLocaleString()} | 
-                            ${story.descendants || 0} comments
-                        </div>
-                        ${storyText}
-                        <div class="news-links">
-                            <a href="${story.url}" target="_blank">Read Full Article</a>
-                            <a href="https://news.ycombinator.com/item?id=${story.id}" target="_blank">View HN Discussion</a>
+                        <img src="${article.urlToImage || 'https://via.placeholder.com/100'}" alt="News image" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title"><a href="${article.url}" target="_blank">${article.title}</a></div>
+                            <div class="news-meta">
+                                by ${article.author || 'Unknown'} | ${new Date(article.publishedAt).toLocaleString()}
+                            </div>
+                            <div class="news-text">${article.description || 'No description available.'}</div>
+                            <div class="news-links">
+                                <a href="${article.url}" target="_blank">Read Full Article</a>
+                            </div>
                         </div>
                     `;
                     newsContainer.appendChild(storyElement);
                 });
-            } catch (error) {
-                console.error('Error fetching news:', error);
+            } else {
+                newsContainer.innerHTML = '<p>No news articles available at the moment.</p>';
             }
+        } catch (error) {
+            console.error('Error fetching news:', error);
+            document.getElementById('news-container').innerHTML = '<p>Error fetching news. Please try again later.</p>';
         }
+    }
 
-        // Fetch news when the page loads
-        fetchNews();
+    // Call fetchNews when the page loads
+    window.onload = fetchNews;
     </script>
 </body>
 </html>
