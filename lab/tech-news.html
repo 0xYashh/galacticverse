@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
         @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+
         body {
             background: black;
             color: rgb(255, 255, 255);
@@ -16,17 +18,22 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        h1, h2 {
+
+        h1,
+        h2 {
             color: #fff;
         }
+
         a {
             color: rgb(195, 122, 255);
             text-decoration: none;
         }
+
         a:hover {
             color: rgb(215, 166, 252);
             text-decoration: underline;
         }
+
         .news-item {
             margin-bottom: 30px;
             border-bottom: 1px solid #333;
@@ -34,33 +41,40 @@
             display: flex;
             align-items: flex-start;
         }
+
         .news-image {
             width: 100px;
             height: 100px;
             object-fit: cover;
             margin-right: 20px;
         }
+
         .news-content {
             flex: 1;
         }
+
         .news-title {
             font-size: 1.2em;
             margin-bottom: 10px;
         }
+
         .news-meta {
             font-size: 0.9em;
             color: #888;
             margin-bottom: 10px;
         }
+
         .news-text {
             font-size: 0.95em;
             margin-bottom: 10px;
         }
+
         .news-links a {
             margin-right: 15px;
         }
     </style>
 </head>
+
 <body>
     <a href="/index.html">[home]</a>
     <a href="/hq/g-hq.html">[galactica-hq]</a>
@@ -73,21 +87,18 @@
     </div>
 
     <script>
-    async function fetchNews() {
-        const apiKey = '521170e0d7a74675b458d18288b112a6';
-        const url = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${apiKey}`;
+        async function fetchNews() {
+            try {
+                const response = await fetch('/api/news');
+                const data = await response.json();
+                const newsContainer = document.getElementById('news-container');
 
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            const newsContainer = document.getElementById('news-container');
+                if (data.articles && data.articles.length > 0) {
+                    data.articles.forEach(article => {
+                        const storyElement = document.createElement('div');
+                        storyElement.className = 'news-item';
 
-            if (data.articles && data.articles.length > 0) {
-                data.articles.forEach(article => {
-                    const storyElement = document.createElement('div');
-                    storyElement.className = 'news-item';
-                    
-                    storyElement.innerHTML = `
+                        storyElement.innerHTML = `
                         <img src="${article.urlToImage || 'https://via.placeholder.com/100'}" alt="News image" class="news-image">
                         <div class="news-content">
                             <div class="news-title"><a href="${article.url}" target="_blank">${article.title}</a></div>
@@ -100,19 +111,19 @@
                             </div>
                         </div>
                     `;
-                    newsContainer.appendChild(storyElement);
-                });
-            } else {
-                newsContainer.innerHTML = '<p>No news articles available at the moment.</p>';
+                        newsContainer.appendChild(storyElement);
+                    });
+                } else {
+                    newsContainer.innerHTML = '<p>No news articles available at the moment.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
             }
-        } catch (error) {
-            console.error('Error fetching news:', error);
-            document.getElementById('news-container').innerHTML = '<p>Error fetching news. Please try again later.</p>';
         }
-    }
 
-    // Call fetchNews when the page loads
-    window.onload = fetchNews;
+        // Call fetchNews when the page loads
+        window.onload = fetchNews;
     </script>
 </body>
+
 </html>
