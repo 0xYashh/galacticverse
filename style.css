@@ -148,6 +148,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  .main-image img{
+    width: 350px;
+  } 
     .explore-section {
         padding: 15px;
     }
