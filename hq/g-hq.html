@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galactica HQ</title>
     <style>
-            @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+
         body {
             background-color: #000;
             color: rgb(255, 255, 255);
@@ -15,9 +17,15 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        h1, h2 {
+
+        h1 {
+            font-size: 1.8rem;
+        }
+        h2 {
+            font-size:1.2rem;
             color: #fff;
         }
+
         a {
             color: rgb(195, 122, 255);
             text-decoration: none;
@@ -27,28 +35,49 @@
             color: rgb(215, 166, 252);
             text-decoration: underline;
         }
+
         .section {
             margin-bottom: 30px;
         }
+
         .item {
             margin-left: 20px;
         }
+
         .date {
             color: #888;
         }
-        .team-members{
+
+        .team-members {
             color: rgb(255, 248, 198);
         }
-        .image img{
+
+        .image img {
             width: 320px;
             height: auto;
         }
+        .stat-box {
+        background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+        border: 1px solid #3a3a3a;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .stat-number {
+        font-size: 24px;
+        color: #c37aff;
+        font-weight: bold;
+    }
     </style>
 </head>
+
 <body>
-    <p><a href="/index.html">[home]</a></p>
+    <p><a href="/index.html">[home]</a>
+        <a href="/lab/g-lab.html">[galactica lab]</a>
+    </p>
     <h1>galactica hq.</h1>
-    <div class="image"><img src="/img/spaceship.jpg" alt=""></div> 
+    <div class="image"><img src="/img/spaceship.jpg" alt=""></div>
     <div class="section">
         <h2>team:</h2>
         <div class="item">
@@ -58,7 +87,7 @@
             <span class="team-members"><a href="">> harshit </a></span>: researcher.
         </div>
         <div class="item">
-            <span class="team-members"><a href="">> shashwat </a></span>: discord lead. 
+            <span class="team-members"><a href="">> shashwat </a></span>: discord lead.
         </div>
         <div class="item">
             <!-- <span class="date">> Pulsar Beat</span> <a href="#">Cosmic Communications Specialist</a> -->
@@ -67,32 +96,31 @@
             <!-- <span class="date">> Void Whisper</span> <a href="#">Dark Matter Researcher</a> -->
         </div>
     </div>
-    
     <div class="section">
-        <h2>missions:</h2>
+        <h2>community stats:</h2>
+        <div class="stat-box">
+            <p>Explorers on board</p>
+            <span class="stat-number" id="memberCount">5</span>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>social handles:</h2>
         <div class="item">
-            <span class="date">> 21.06.2024</span> <a href="#">Operation Stardust: Mapping uncharted galaxies</a>
+        <span class="date">>twitter/x acc-</span> <a href="https://twitter.com/0xgalactica_">x dot com</a>
         </div>
         <div class="item">
-            <span class="date">> 15.03.2024</span> <a href="#">Project Luminous: Harnessing quasar energy</a>
-        </div>
-        <div class="item">
-            <span class="date">> 02.01.2024</span> <a href="#">Initiative Nexus: Interstellar alliance building</a>
+        <span class="date">>discord channel-</span> <a href="#">discord</a>
         </div>
     </div>
     <div class="section">
         <h2>announcements:</h2>
         <div class="item">
-            <span class="date">> 13.11.2023</span> <a href="#">new research team formed</a>
-        </div>
-        <div class="item">
-            <span class="date">> 15.10.2023</span> <a href="#">galactic lab expansion</a>
-        </div>
-        <div class="item">
-            <span class="date">> 27.08.2023</span> <a href="#">interstellar communication breakthrough</a>
+            <span class="date">> 05.07.2024</span> <a href="/announcement/g-launch.html">galactica-launch</a>
         </div>
     </div>
-    
+
 
 </body>
 </html>
