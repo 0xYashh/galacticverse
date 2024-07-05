@@ -59,6 +59,9 @@ body {
 .main-content ul li a:hover {
   color: rgb(215, 128, 255);
 }
+.main-image img{
+  width: 450px;
+}
 
 .social-handles a {
   font-family: "NB International Regular Webfont";
