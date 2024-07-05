@@ -53,39 +53,33 @@
     </div>
 
     <script>
-        async function fetchNASAImages() {
-            const apiUrl = 'https://images-api.nasa.gov/search?q=galaxy&media_type=image';
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                const items = data.collection.items.slice(0, 5); // Get first 5 items
-                
-                const container = document.getElementById('nasa-container');
-                container.innerHTML = ''; // Clear loading message
-
-                items.forEach(item => {
-                    const imageUrl = item.links[0].href;
-                    const title = item.data[0].title;
-                    const description = item.data[0].description || 'No description available.';
-
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'nasa-item';
-                    itemDiv.innerHTML = `
-                        <img class="nasa-image" src="${imageUrl}" alt="${title}">
-                        <h3>${title}</h3>
-                        <p>${description}</p>
-                    `;
-                    container.appendChild(itemDiv);
-                });
-            } catch (error) {
-                console.error('Error fetching NASA images:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'block';
-            }
-        }
-
-        fetchNASAImages();
+async function fetchNASAImages() {
+  const apiUrl = '/api/nasa-images';
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const items = data.collection.items.slice(0, 5);
+    const container = document.getElementById('nasa-container');
+    container.innerHTML = '';
+    items.forEach(item => {
+      const imageUrl = item.links[0].href;
+      const title = item.data[0].title;
+      const description = item.data[0].description || 'No description available.';
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'nasa-item';
+      itemDiv.innerHTML = `
+        <img class="nasa-image" src="${imageUrl}" alt="${title}">
+        <h3>${title}</h3>
+        <p>${description}</p>
+      `;
+      container.appendChild(itemDiv);
+    });
+  } catch (error) {
+    console.error('Error fetching NASA images:', error);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+  }
+}
     </script>
 </body>
 </html>

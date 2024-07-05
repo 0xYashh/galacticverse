@@ -73,43 +73,37 @@
     <div id="results"></div>
 
     <script>
-        document.getElementById('searchButton').addEventListener('click', searchArXiv);
-
-        function searchArXiv() {
-            const searchTerm = document.getElementById('searchTerm').value;
-            const apiUrl = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(searchTerm)}&start=0&max_results=10`;
-
-            fetch(apiUrl)
-                .then(response => response.text())
-                .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-                .then(data => {
-                    const entries = data.getElementsByTagName('entry');
-                    let html = '';
-                    
-                    for (let entry of entries) {
-                        const title = entry.getElementsByTagName('title')[0].textContent;
-                        const authors = Array.from(entry.getElementsByTagName('author'))
-                            .map(author => author.getElementsByTagName('name')[0].textContent)
-                            .join(', ');
-                        const summary = entry.getElementsByTagName('summary')[0].textContent;
-                        const link = entry.getElementsByTagName('id')[0].textContent;
-
-                        html += `
-                            <div class="paper">
-                                <h3><a href="${link}" target="_blank">${title}</a></h3>
-                                <p class="authors">${authors}</p>
-                                <p>${summary.substring(0, 200)}...</p>
-                            </div>
-                        `;
-                    }
-
-                    document.getElementById('results').innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('results').innerHTML = 'An error occurred while fetching data.';
-                });
-        }
+function searchArXiv() {
+  const searchTerm = document.getElementById('searchTerm').value;
+  const apiUrl = `/api/arxiv?searchTerm=${encodeURIComponent(searchTerm)}`;
+  fetch(apiUrl)
+    .then(response => response.text())
+    .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+    .then(data => {
+      const entries = data.getElementsByTagName('entry');
+      let html = '';
+      for (let entry of entries) {
+        const title = entry.getElementsByTagName('title')[0].textContent;
+        const authors = Array.from(entry.getElementsByTagName('author'))
+          .map(author => author.getElementsByTagName('name')[0].textContent)
+          .join(', ');
+        const summary = entry.getElementsByTagName('summary')[0].textContent;
+        const link = entry.getElementsByTagName('id')[0].textContent;
+        html += `
+          <div class="paper">
+            <h3><a href="${link}" target="_blank">${title}</a></h3>
+            <p class="authors">${authors}</p>
+            <p>${summary.substring(0, 200)}...</p>
+          </div>
+        `;
+      }
+      document.getElementById('results').innerHTML = html;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('results').innerHTML = 'An error occurred while fetching data.';
+    });
+}
     </script>
 </body>
 </html>

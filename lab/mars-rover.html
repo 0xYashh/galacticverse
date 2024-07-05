@@ -55,28 +55,23 @@
     </div>
 
     <script>
-        async function fetchMarsPhoto() {
-            const apiKey = 'ksWndvTSPqnMThpAH764jbZHGl7x79WtKsDHbCft'; // Replace with your actual NASA API key
-            const apiUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?api_key=${apiKey}`;
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                const latestPhoto = data.latest_photos[0];
-
-                document.getElementById('mars-image').src = latestPhoto.img_src;
-                document.getElementById('mars-image').style.display = 'block';
-                document.getElementById('mars-info').textContent = `Rover: ${latestPhoto.rover.name}, Camera: ${latestPhoto.camera.full_name}`;
-                document.getElementById('mars-date').textContent = `Earth Date: ${latestPhoto.earth_date}`;
-                document.getElementById('loading').style.display = 'none';
-            } catch (error) {
-                console.error('Error fetching Mars photo:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'block';
-            }
-        }
-
-        fetchMarsPhoto();
+async function fetchMarsPhoto() {
+  const apiUrl = '/api/nasa?endpoint=mars-photos/api/v1/rovers/curiosity/latest_photos';
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const latestPhoto = data.latest_photos[0];
+    document.getElementById('mars-image').src = latestPhoto.img_src;
+    document.getElementById('mars-image').style.display = 'block';
+    document.getElementById('mars-info').textContent = `Rover: ${latestPhoto.rover.name}, Camera: ${latestPhoto.camera.full_name}`;
+    document.getElementById('mars-date').textContent = `Earth Date: ${latestPhoto.earth_date}`;
+    document.getElementById('loading').style.display = 'none';
+  } catch (error) {
+    console.error('Error fetching Mars photo:', error);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+  }
+}
     </script>
 </body>
 </html>
