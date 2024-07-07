@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactica - Ideas Board</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+
+        body {
+            background: black;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont";
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .main-content {
+            width: 70%;
+            max-width: 800px;
+        }
+
+        .sidebar {
+            width: 25%;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+
+        .idea-form,
+        .idea-stream,
+        .auth-form {
+            margin-top: 20px;
+        }
+
+        textarea,
+        input,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: white;
+            font-family: inherit;
+        }
+
+        button {
+            background: rgb(195, 122, 255);
+            color: black;
+            cursor: pointer;
+            width: auto;
+        }
+
+        button:hover {
+            background: rgb(215, 166, 252);
+        }
+
+        .idea {
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .idea-meta {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .idea-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            margin-right: 10px;
+        }
+
+        .community-members {
+            margin-top: 20px;
+        }
+
+        .member {
+            margin-bottom: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #1a1a1a;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #3a3a3a;
+            width: 80%;
+            max-width: 500px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-content">
+        <a href="/index.html">[home]</a>
+        <a href="/hq/g-hq.html">[galactica-hq]</a>
+        <a href="/lab/g-lab.html">[galactica-lab]</a>
+
+        <h1>galactica - ideas board.</h1>
+
+        <div id="welcome-message"></div>
+
+        <div id="auth-status"></div>
+        <button id="logout-button" style="display: none;">Logout</button>
+        <button id="edit-profile-button" style="display: none;">Edit Profile</button>
+        <button id="delete-account-button" style="display: none;">Delete Account</button>
+
+        <div class="idea-form" id="idea-form" style="display: none;">
+            <textarea id="idea-input" maxlength="280" placeholder="Share your idea (max 280 characters)"></textarea>
+            <button id="submit-idea">Submit Idea</button>
+        </div>
+
+        <div class="idea-stream" id="idea-stream">
+            <!-- Ideas will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h2>Join the Community</h2>
+        <div class="auth-form" id="auth-form">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <input type="text" id="display-name" placeholder="Display Name">
+            <input type="text" id="linkedin" placeholder="LinkedIn URL">
+            <input type="text" id="github" placeholder="GitHub URL">
+            <input type="text" id="portfolio" placeholder="Portfolio URL (optional)">
+            <button id="login-button">Login</button>
+            <button id="signup-button">Sign Up</button>
+        </div>
+
+        <h2>Community Members</h2>
+        <div class="community-members" id="community-members">
+            <!-- Members will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Profile</h2>
+            <input type="text" id="edit-display-name" placeholder="Display Name">
+            <input type="text" id="edit-linkedin" placeholder="LinkedIn URL">
+            <input type="text" id="edit-github" placeholder="GitHub URL">
+            <input type="text" id="edit-portfolio" placeholder="Portfolio URL (optional)">
+            <button id="update-profile-button">Update Profile</button>
+        </div>
+    </div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div id="delete-account-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Delete Account</h2>
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            <button id="confirm-delete-account">Yes, Delete My Account</button>
+            <button id="cancel-delete-account">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Auth Success Modal -->
+    <div id="auth-success-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="auth-success-message"></h2>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+  apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
+  authDomain: "galactica-f174c.firebaseapp.com",
+  projectId: "galactica-f174c",
+  storageBucket: "galactica-f174c.appspot.com",
+  messagingSenderId: "152146817639",
+  appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
+  measurementId: "G-T19QCVB3F1"
+};
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // DOM Elements
+        const authStatus = document.getElementById('auth-status');
+        const authForm = document.getElementById('auth-form');
+        const ideaForm = document.getElementById('idea-form');
+        const ideaInput = document.getElementById('idea-input');
+        const submitIdeaButton = document.getElementById('submit-idea');
+        const ideaStream = document.getElementById('idea-stream');
+        const loginButton = document.getElementById('login-button');
+        const signupButton = document.getElementById('signup-button');
+        const logoutButton = document.getElementById('logout-button');
+        const editProfileButton = document.getElementById('edit-profile-button');
+        const deleteAccountButton = document.getElementById('delete-account-button');
+        const editProfileModal = document.getElementById('edit-profile-modal');
+        const deleteAccountModal = document.getElementById('delete-account-modal');
+        const authSuccessModal = document.getElementById('auth-success-modal');
+        const updateProfileButton = document.getElementById('update-profile-button');
+        const confirmDeleteAccountButton = document.getElementById('confirm-delete-account');
+        const cancelDeleteAccountButton = document.getElementById('cancel-delete-account');
+        const communityMembers = document.getElementById('community-members');
+        const welcomeMessage = document.getElementById('welcome-message');
+
+        // Set welcome message
+        function setWelcomeMessage() {
+            welcomeMessage.innerHTML = `
+                <h2>Welcome to Galactica - Ideas Board</h2>
+                <p>Share and explore innovative ideas with our community. Sign up or log in to contribute!</p>
+            `;
+        }
+
+        // Authentication state observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                authStatus.textContent = `Logged in as ${user.email}`;
+                welcomeMessage.style.display = 'none';
+                authForm.style.display = 'none';
+                ideaForm.style.display = 'block';
+                logoutButton.style.display = 'inline-block';
+                editProfileButton.style.display = 'inline-block';
+                deleteAccountButton.style.display = 'inline-block';
+                loadUserProfile(user.uid);
+            } else {
+                setWelcomeMessage();
+                authStatus.textContent = '';
+                authForm.style.display = 'block';
+                ideaForm.style.display = 'none';
+                logoutButton.style.display = 'none';
+                editProfileButton.style.display = 'none';
+                deleteAccountButton.style.display = 'none';
+            }
+            updateMembersList();
+            loadIdeas();
+        });
+
+        // Sign Up
+        function signUp(email, password, displayName, linkedin, github, portfolio) {
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection('users').doc(user.uid).set({
+                        displayName: displayName,
+                        linkedin: linkedin,
+                        github: github,
+                        portfolio: portfolio,
+                        email: email
+                    });
+                })
+                .then(() => {
+                    showAuthSuccessModal("Successfully signed up!");
+                })
+                .catch((error) => alert(error.message));
+        }
+
+        // Login
+        function login(email, password) {
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    showAuthSuccessModal("Successfully logged in!");
+                })
+                .catch((error) => alert(error.message));
+        }
+
+        // Logout
+        function logout() {
+            auth.signOut()
+                .then(() => console.log("Logged out"))
+                .catch((error) => console.error(error));
+        }
+
+        // Load User Profile
+        function loadUserProfile(userId) {
+            db.collection('users').doc(userId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        document.getElementById('edit-display-name').value = data.displayName || '';
+                        document.getElementById('edit-linkedin').value = data.linkedin || '';
+                        document.getElementById('edit-github').value = data.github || '';
+                        document.getElementById('edit-portfolio').value = data.portfolio || '';
+                    }
+                })
+                .catch((error) => console.error("Error loading user profile:", error));
+        }
+
+        // Update Profile
+        function updateProfile(displayName, linkedin, github, portfolio) {
+            const user = auth.currentUser;
+            if (user) {
+                db.collection('users').doc(user.uid).update({
+                    displayName: displayName,
+                    linkedin: linkedin,
+                    github: github,
+                    portfolio: portfolio
+                })
+                .then(() => {
+                    console.log("Profile updated");
+                    editProfileModal.style.display = 'none';
+                    showAuthSuccessModal("Profile updated successfully!");
+                })
+                .catch((error) => console.error("Error updating profile:", error));
+            }
+        }
+
+        // Delete Account
+        function deleteAccount() {
+            const user = auth.currentUser;
+            if (user) {
+                db.collection('users').doc(user.uid).delete()
+                    .then(() => user.delete())
+                    .then(() => {
+                        console.log("Account deleted");
+                        deleteAccountModal.style.display = 'none';
+                        showAuthSuccessModal("Account deleted successfully!");
+                    })
+                    .catch((error) => console.error("Error deleting account:", error));
+            }
+        }
+
+        // Submit Idea
+        function submitIdea(ideaText) {
+            const user = auth.currentUser;
+            if (user && ideaText.trim() !== '' && ideaText.length <= 280) {
+                db.collection('ideas').add({
+                    text: ideaText.trim(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    authorId: user.uid,
+                    upvotes: 0,
+                    downvotes: 0
+                })
+                .then(() => {
+                    ideaInput.value = '';
+                    console.log("Idea submitted");
+                })
+                .catch((error) => console.error("Error submitting idea:", error));
+            }
+        }
+
+        // Create Idea Element
+        function createIdeaElement(id, idea) {
+            const ideaDiv = document.createElement('div');
+            ideaDiv.className = 'idea';
+            db.collection('users').doc(idea.authorId).get().then((doc) => {
+                const userData = doc.exists ? doc.data() : { displayName: 'Anonymous' };
+                ideaDiv.innerHTML = `
+                    <div class="idea-meta">
+                        > posted by ${userData.displayName} <${new Date(idea.timestamp.toDate()).toLocaleString()}>
+                        <div class="social-links">
+                            ${userData.linkedin ? `[<a href="${userData.linkedin}" target="_blank">linkedin</a>]` : ''}
+                            ${userData.github ? `[<a href="${userData.github}" target="_blank">github</a>]` : ''}
+                            ${userData.portfolio ? `[<a href="${userData.portfolio}" target="_blank">portfolio</a>]` : ''}
+                        </div>
+                    </div>
+                    <p>${idea.text}</p>
+              <div class="idea-actions">
+                        <div class="vote-buttons">
+                            <button onclick="vote('${id}', 'up')">↑ ${idea.upvotes}</button>
+                            <button onclick="vote('${id}', 'down')">↓ ${idea.downvotes}</button>
+                        </div>
+                        <button onclick="showReplyForm('${id}')">Reply</button>
+                        ${idea.authorId === auth.currentUser?.uid ? `
+                            <button onclick="editIdea('${id}')">Edit</button>
+                            <button onclick="deleteIdea('${id}')">Delete</button>
+                        ` : ''}
+                    </div>
+                    <div id="reply-form-${id}" style="display: none;">
+                        <textarea id="reply-input-${id}" placeholder="Your reply"></textarea>
+                        <button onclick="submitReply('${id}')">Submit Reply</button>
+                    </div>
+                    <div id="replies-${id}"></div>
+                `;
+            });
+            return ideaDiv;
+        }
+
+        // Vote on Idea
+        function vote(ideaId, voteType) {
+            const user = auth.currentUser;
+            if (user) {
+                const ideaRef = db.collection('ideas').doc(ideaId);
+                ideaRef.update({
+                    [voteType === 'up' ? 'upvotes' : 'downvotes']: firebase.firestore.FieldValue.increment(1)
+                })
+                .catch((error) => console.error("Error voting:", error));
+            } else {
+                alert('Please log in to vote.');
+            }
+        }
+
+        // Show Reply Form
+        function showReplyForm(ideaId) {
+            document.getElementById(`reply-form-${ideaId}`).style.display = 'block';
+        }
+
+        // Submit Reply
+        function submitReply(ideaId) {
+            const user = auth.currentUser;
+            if (user) {
+                const replyText = document.getElementById(`reply-input-${ideaId}`).value.trim();
+                if (replyText) {
+                    db.collection('ideas').doc(ideaId).collection('replies').add({
+                        text: replyText,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        authorId: user.uid
+                    })
+                    .then(() => {
+                        document.getElementById(`reply-input-${ideaId}`).value = '';
+                        document.getElementById(`reply-form-${ideaId}`).style.display = 'none';
+                    })
+                    .catch((error) => console.error("Error submitting reply:", error));
+                }
+            } else {
+                alert('Please log in to reply.');
+            }
+        }
+
+        // Update Members List
+        function updateMembersList() {
+            db.collection('users').get().then((snapshot) => {
+                communityMembers.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const user = doc.data();
+                    const memberDiv = document.createElement('div');
+                    memberDiv.className = 'member';
+                    memberDiv.innerHTML = `
+                        ${user.displayName || 'Anonymous'}
+                        ${user.linkedin ? `[<a href="${user.linkedin}" target="_blank">linkedin</a>]` : ''}
+                        ${user.github ? `[<a href="${user.github}" target="_blank">github</a>]` : ''}
+                        ${user.portfolio ? `[<a href="${user.portfolio}" target="_blank">portfolio</a>]` : ''}
+                    `;
+                    communityMembers.appendChild(memberDiv);
+                });
+            }).catch((error) => console.error("Error updating members list:", error));
+        }
+
+        // Load Ideas
+        function loadIdeas() {
+            db.collection('ideas').orderBy('timestamp', 'desc').get().then((snapshot) => {
+                ideaStream.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const idea = doc.data();
+                    const ideaElement = createIdeaElement(doc.id, idea);
+                    ideaStream.appendChild(ideaElement);
+                });
+            }).catch((error) => console.error("Error loading ideas:", error));
+        }
+
+        // Show Auth Success Modal
+        function showAuthSuccessModal(message) {
+            document.getElementById('auth-success-message').textContent = message;
+            authSuccessModal.style.display = 'block';
+        }
+
+        // Event Listeners
+        signupButton.addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const displayName = document.getElementById('display-name').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const github = document.getElementById('github').value;
+            const portfolio = document.getElementById('portfolio').value;
+            signUp(email, password, displayName, linkedin, github, portfolio);
+        });
+
+        loginButton.addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            login(email, password);
+        });
+
+        logoutButton.addEventListener('click', logout);
+
+        submitIdeaButton.addEventListener('click', () => submitIdea(ideaInput.value));
+
+        editProfileButton.addEventListener('click', () => {
+            editProfileModal.style.display = 'block';
+            loadUserProfile(auth.currentUser.uid);
+        });
+
+        updateProfileButton.addEventListener('click', () => {
+            const displayName = document.getElementById('edit-display-name').value;
+            const linkedin = document.getElementById('edit-linkedin').value;
+            const github = document.getElementById('edit-github').value;
+            const portfolio = document.getElementById('edit-portfolio').value;
+            updateProfile(displayName, linkedin, github, portfolio);
+        });
+
+        deleteAccountButton.addEventListener('click', () => {
+            deleteAccountModal.style.display = 'block';
+        });
+
+        confirmDeleteAccountButton.addEventListener('click', deleteAccount);
+
+        cancelDeleteAccountButton.addEventListener('click', () => {
+            deleteAccountModal.style.display = 'none';
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target == editProfileModal) {
+                editProfileModal.style.display = "none";
+            }
+            if (event.target == deleteAccountModal) {
+                deleteAccountModal.style.display = "none";
+            }
+            if (event.target == authSuccessModal) {
+                authSuccessModal.style.display = "none";
+            }
+        }
+
+        // Close button functionality for modals
+        document.querySelectorAll('.close').forEach(closeButton => {
+            closeButton.onclick = function() {
+                this.parentElement.parentElement.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        setWelcomeMessage();
+        updateMembersList();
+        loadIdeas();
+    </script>
+</body>
+
+</html>
