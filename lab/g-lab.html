@@ -16,18 +16,12 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        h1 {
-            font-size: 1.8rem;
-        }
-        h2 {
-            font-size:1.2rem;
-            color: #fff;
-        }
+        h1 { font-size: 1.8rem; }
+        h2 { font-size:1.2rem; color: #fff; }
         a {
             color: rgb(195, 122, 255);
             text-decoration: none;
         }
-
         a:hover {
             color: rgb(215, 166, 252);
             text-decoration: underline;
@@ -36,20 +30,26 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* border: 2px solid rebeccapurple; */
         }
-        .section {
-            margin-bottom: 30px;
-        }
-        .item {
-            margin-left: 20px;
-        }
-        .date {
-            color: #888;
-        }
+        .section { margin-bottom: 30px; }
+        .item { margin-left: 20px; }
+        .date { color: #888; }
         .image img{
             width: 320px;
             height: auto;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgb(195, 122, 255);
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: rgb(215, 166, 252);
+            text-decoration: none;
         }
     </style>
 </head>
@@ -61,72 +61,69 @@
     <div class="image"><img src="/img/ss.jpg" alt=""></div> 
     <main class="g-lab">
         <section class="g-lab-section">
-    <div class="section">
-        <h2>posts:</h2>
-        <div class="item">
-            <span class="date">> 06.07.2024 :</span> e/acc-effective accelerationism<a href="/posts/post1.html"> view post</a>
-        </div>
-        <!-- <div class="item">
-            <span class="date">> 27.01.2024</span> <a href="#">neural interface prototypes</a>
-        </div>
-        <div class="item">
-            <span class="date">> 12.12.2023</span> <a href="#">exoplanet atmosphere simulations</a>
-        </div>
-        <div class="item">
-            <span class="date">> 23.11.2023</span> <a href="#">antimatter containment theories</a>
-        </div> -->
-    </div>
+            <div class="section">
+                <h2>posts:</h2>
+                <div class="item">
+                    <span class="date">> 06.07.2024 :</span> e/acc-effective accelerationism<a href="/posts/post1.html"> view post</a>
+                </div>
+            </div>
+            <div class="section">
+                <h2>community creations:</h2>
+                <div class="item">
+                    >submit your research/ideas <a href="/features/submit-research.html">post</a>
+                </div>
+                <!-- <div class="item">
+                    >showcase your artworks <a href="/features/artworks.html" >share</a>
+                </div> -->
+                <div class="item">
+                    >engage in discussion <a href="/features/forum.html">galactica Forum</a>
+                </div>
+            </div>
 
+            <!-- <div class="section">
+                <h2>featured papers:</h2>
+                <div class="item">
+                    <span class="date">> 08.07.2024 :</span> Quantum Computing in Medicine <a href="#"> view submission</a>
+                </div>
+                <div class="item">
+                    <span class="date">> 07.07.2024 :</span> Sustainable Energy from Dark Matter <a href="#"> view submission</a>
+                </div>
+            </div> -->
 
+            <div class="section">
+                <h2>galactica observatory:</h2>
+                <div class="item">
+                    > galactic image of the day <a href="/lab/apod.html" target="_blank">view</a>
+                </div>
+                <div class="item">
+                    > mars rover latest photo <a href="/lab/mars-rover.html" target="_blank">view</a>
+                </div>
+                <div class="item">
+                    > nasa image library <a href="nasa-image.html" target="_blank">view</a>
+                </div>
+            </div>
 
-    <!-- <div class="section">
-        <h2>research:</h2>
-        <div class="item">
-            > dr_quantum <a href="#">profile</a> <a href="#">publications</a>
-        </div>
-        <div class="item">
-            > cosmic_engineer <a href="#">profile</a> <a href="#">publications</a>
-        </div>
-        <div class="item">
-            > xenobiologist_alpha <a href="#">profile</a> <a href="#">publications</a>
-        </div>
-        <div class="item">
-            > gravity_hacker <a href="#">profile</a> <a href="#">publications</a>
-        </div>
-        <div class="item">
-            > void_whisperer <a href="#">profile</a> <a href="#">publications</a>
-        </div>
-    </div>
-    <div class="section"> -->
-        <h2>galactica observatory:</h2>
-        <div class="item">
-            > galactic image of the day <a href="/lab/apod.html" target="_blank">view</a>
-        </div>
-        <div class="item">
-            > mars rover latest photo <a href="/lab/mars-rover.html" target="_blank">view</a>
-        </div>
-        <div class="item">
-            > nasa image library <a href="nasa-image.html" target="_blank">view</a>
-        </div>
-    <div class="section">
-        <h2>resources:</h2>
-        
-        <div class="item">
-            > arXiv scientific papers <a href="arxiv.html" target="_blank">search</a>
-            
-        </div>
+            <div class="section">
+                <h2>resources:</h2>
+                <!-- <div class="item">
+                    >galactica-newsletter <a href="arxiv.html" target="_blank">subscribe</a>
+                </div> -->
+                <div class="item">
+                    >arXiv scientific papers <a href="arxiv.html" target="_blank">search</a>
+                </div>
+                <div class="item">
+                    >tech news <a href="/lab/tech-news.html" target="_blank">view</a>
+                </div>
+                <div class="item">
+                    >podcasts <a href="/lab/podcast.html" target="_blank">view</a>
+                </div>
+                <div class="item">
+                    >galactica-fav. <a href="/lab/fav.html" target="_blank">view</a>
+                </div>
+            </div>
 
-        <div class="item">
-            >tech news <a href="/lab/tech-news.html" target="_blank">view</a>
-        </div>
-        <div class="item">
-            >podcasts <a href="/lab/podcast.html" target="_blank">view</a>
-        </div>
-        <div class="item">
-            >galactica-fav. <a href="/lab/fav.html" target="_blank">view</a>
-        </div>
-    </div>
-</section>
-</main>
+  
+        </section>
+    </main>
 </body>
 </html>
