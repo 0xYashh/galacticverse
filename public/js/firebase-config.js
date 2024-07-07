@@ -1,11 +1,16 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
-    authDomain: "galactica-f174c.firebaseapp.com",
-    projectId: "galactica-f174c",
-    storageBucket: "galactica-f174c.appspot.com",
-    messagingSenderId: "152146817639",
-    appId: "1:152146817639:web:f7054a8c8265b78cc5dac2",
-    measurementId: "G-RG5ZQP8DYE"
+// Load environment variables if running locally
+if (typeof window === 'undefined') {
+    require('dotenv').config();
+  }
+  
+  const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY || 'your_api_key',
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN || 'your_auth_domain',
+    projectId: process.env.FIREBASE_PROJECT_ID || 'your_project_id',
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'your_storage_bucket',
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || 'your_messaging_sender_id',
+    appId: process.env.FIREBASE_APP_ID || 'your_app_id',
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID || 'your_measurement_id'
   };
   
   firebase.initializeApp(firebaseConfig);

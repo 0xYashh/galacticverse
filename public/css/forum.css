@@ -1,19 +1,27 @@
-body {
-    background-color: #0f0f0f;
-    color: #ffffff;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
 
-.container {
+body {
+    background: black;
+    color: rgb(255, 255, 255);
+    font-family: "NB International Regular Webfont", sans-serif;
+    line-height: 1.6;
+    padding: 20px;
     max-width: 800px;
     margin: 0 auto;
 }
 
-h1, h2 {
-    color: #c37aff;
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.2rem; color: #fff; }
+
+a {
+    color: rgb(195, 122, 255);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(215, 166, 252);
+    text-decoration: underline;
 }
 
 .discussion-list {
@@ -21,7 +29,7 @@ h1, h2 {
     padding: 0;
 }
 
-.discussion-item {
+.discussion-item, .comment-item {
     background-color: #1a1a1a;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -29,75 +37,85 @@ h1, h2 {
     transition: background-color 0.3s ease;
 }
 
-.discussion-item:hover {
+.discussion-item:hover, .comment-item:hover {
     background-color: #252525;
 }
 
 .discussion-title {
-    color: #c37aff;
+    color: rgb(195, 122, 255);
     font-size: 1.2em;
     margin: 0 0 10px 0;
 }
 
-.discussion-meta {
+.discussion-meta, .comment-meta {
     color: #888;
     font-size: 0.9em;
     margin-bottom: 10px;
 }
 
-.discussion-preview {
-    margin-bottom: 10px;
-}
-
 .button {
-    background-color: #c37aff;
-    border: none;
-    border-radius: 3px;
-    color: #000000;
-    cursor: pointer;
     display: inline-block;
-    font-size: 14px;
-    padding: 8px 16px;
+    padding: 10px 20px;
+    background-color: rgb(195, 122, 255);
+    color: black;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
 }
 
 .button:hover {
-    background-color: #d7a6fc;
+    background-color: rgb(215, 166, 252);
+    text-decoration: none;
 }
 
-.form-group {
-    margin-bottom: 15px;
+form {
+    margin-bottom: 20px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input[type="text"],
-.form-group textarea {
+input, textarea {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #444;
-    border-radius: 3px;
-    background-color: #222;
-    color: #fff;
-}
-
-.comments {
-    margin-top: 20px;
-}
-
-.comment {
-    background-color: #1a1a1a;
-    border-radius: 3px;
-    margin-bottom: 10px;
     padding: 10px;
+    margin-bottom: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    color: white;
 }
 
-.comment-meta {
-    color: #888;
-    font-size: 0.8em;
-    margin-bottom: 5px;
+.comment-item {
+    border-left: 3px solid rgb(195, 122, 255);
+    padding-left: 15px;
+}
+
+.comment-content {
+    margin-top: 10px;
+}
+
+#vote-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#vote-count {
+    margin: 0 10px;
+    font-size: 1.2em;
+}
+
+#search-container {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: calc(100% - 100px);
+    margin-right: 10px;
+}
+
+#search-button {
+    width: 90px;
+}
+
+.edit-buttons {
+    margin-top: 10px;
 }

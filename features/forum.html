@@ -4,101 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galactica Forum</title>
-    <link rel="stylesheet" href="/public/css/forum.css">
-    <style>
-        /* Additional styles for auth buttons */
-        .auth-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-        .auth-buttons button {
-            background-color: rgb(195, 122, 255);
-            border: none;
-            color: black;
-            padding: 8px 16px;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .auth-buttons button:hover {
-            background-color: rgb(215, 166, 252);
-        }
-        #auth-modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #1a1a1a;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #3a3a3a;
-            width: 300px;
-            color: white;
-        }
-        .modal-content h2 {
-            color: rgb(195, 122, 255);
-        }
-        .modal-content input {
-            width: 100%;
-            padding: 8px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            background-color: #333;
-            border: 1px solid #555;
-            color: white;
-        }
-        .modal-content button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: rgb(195, 122, 255);
-            border: none;
-            color: black;
-            cursor: pointer;
-        }
-        .modal-content button:hover {
-            background-color: rgb(215, 166, 252);
-        }
-    </style>
+    <link rel="stylesheet" href="../public/css/forum.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="auth-buttons">
-            <button id="login-btn">Login</button>
-            <button id="signup-btn">Sign Up</button>
-            <button id="logout-btn" style="display: none;">Logout</button>
-        </div>
-        <h1>Galactica Forum</h1>
-        <div id="new-discussion-form" style="display: none;">
-            <!-- Existing form content -->
-        </div>
-        <h2>Recent Discussions</h2>
-        <ul id="discussionList" class="discussion-list"></ul>
+    <a href="/index.html">[home]</a>
+    <a href="/hq/g-hq.html">[galactica-hq]</a>
+    <a href="/lab/g-lab.html">[galactica-lab]</a>
+    <h1>galactica forum.</h1>
+
+    <div id="new-discussion-form">
+        <h2>start a new discussion</h2>
+        <form id="discussion-form">
+            <input type="text" id="discussion-title" placeholder="discussion title" required>
+            <textarea id="discussion-content" placeholder="discussion content" required></textarea>
+            <input type="text" id="discussion-tags" placeholder="tags (comma-separated)">
+            <button type="submit" class="button">post discussion</button>
+        </form>
     </div>
 
-    <div id="auth-modal">
-        <div class="modal-content">
-            <h2 id="modal-title">Login</h2>
-            <form id="auth-form">
-                <input type="email" id="auth-email" placeholder="Email" required>
-                <input type="password" id="auth-password" placeholder="Password" required>
-                <button type="submit" id="auth-submit">Submit</button>
-            </form>
-            <p id="auth-message"></p>
-        </div>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search discussions...">
+        <button id="search-button" class="button">Search</button>
     </div>
+
+    <h2>recent discussions</h2>
+    <ul id="discussion-list" class="discussion-list"></ul>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="/public/js/firebase-config.js"></script>
-    <script src="/public/js/forum.js"></script>
+    <script src="../public/js/firebase-config.js"></script>
+    <script src="../public/js/forum.js"></script>
 </body>
 </html>

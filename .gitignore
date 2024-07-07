@@ -1,0 +1,23 @@
+# Environment variables
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# Firebase configuration
+firebase-config.js
+
+# Build files
+build/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
