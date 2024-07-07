@@ -16,19 +16,21 @@
             line-height: 1.6;
             padding: 20px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
         }
 
         .main-content {
-            width: 70%;
+            width: 100%;
             max-width: 800px;
+            margin: 0 auto;
         }
 
         .sidebar {
-            width: 25%;
+            width: 100%;
             background: #1a1a1a;
             padding: 20px;
             border-radius: 5px;
+            margin-top: 20px;
         }
 
         h1 {
@@ -84,6 +86,7 @@
             border: 1px solid #3a3a3a;
             padding: 10px;
             margin-bottom: 10px;
+            position: relative;
         }
 
         .idea-meta {
@@ -93,7 +96,7 @@
 
         .idea-actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             margin-top: 10px;
         }
 
@@ -118,9 +121,9 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
         }
-        
+
         .modal-content {
             background-color: #1a1a1a;
             margin: 15% auto;
@@ -129,7 +132,7 @@
             width: 80%;
             max-width: 500px;
         }
-        
+
         .close {
             color: #aaa;
             float: right;
@@ -137,11 +140,42 @@
             font-weight: bold;
             cursor: pointer;
         }
-        
+
         .close:hover,
         .close:focus {
             color: #fff;
             text-decoration: none;
+        }
+
+        .reply {
+            margin-left: 20px;
+            padding: 10px;
+            background: #2a2a2a;
+            border-left: 2px solid rgb(195, 122, 255);
+            margin-top: 10px;
+        }
+
+        .reply-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .welcome-message {
+            background: #1a1a1a;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .community-link {
+                display: inline-block;
+            }
         }
     </style>
 </head>
@@ -153,13 +187,17 @@
         <a href="/lab/g-lab.html">[galactica-lab]</a>
 
         <h1>galactica - ideas board.</h1>
-
-        <div id="welcome-message"></div>
-
         <div id="auth-status"></div>
         <button id="logout-button" style="display: none;">Logout</button>
         <button id="edit-profile-button" style="display: none;">Edit Profile</button>
         <button id="delete-account-button" style="display: none;">Delete Account</button>
+        <a href="#" id="community-link" class="community-link" style="display: none;">Community Members</a>
+
+        <div class="welcome-message" id="welcome-message" style="display: none;">
+            <p>Welcome to Galactica Ideas Board! Please log in or sign up to participate.</p>
+            <button id="show-login">Login</button>
+            <button id="show-signup">Sign Up</button>
+        </div>
 
         <div class="idea-form" id="idea-form" style="display: none;">
             <textarea id="idea-input" maxlength="280" placeholder="Share your idea (max 280 characters)"></textarea>
@@ -172,19 +210,25 @@
     </div>
 
     <div class="sidebar">
-        <h2>Join the Community</h2>
+        <h2 id="join-community-heading">Join the Community</h2>
         <div class="auth-form" id="auth-form">
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <input type="text" id="display-name" placeholder="Display Name">
-            <input type="text" id="linkedin" placeholder="LinkedIn URL">
-            <input type="text" id="github" placeholder="GitHub URL">
-            <input type="text" id="portfolio" placeholder="Portfolio URL (optional)">
-            <button id="login-button">Login</button>
-            <button id="signup-button">Sign Up</button>
+            <div id="login-fields" style="display: none;">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login-button">Login</button>
+            </div>
+            <div id="signup-fields" style="display: none;">
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <input type="text" id="display-name" placeholder="Display Name" required>
+                <input type="text" id="linkedin" placeholder="LinkedIn URL (optional)">
+                <input type="text" id="github" placeholder="GitHub URL (optional)">
+                <input type="text" id="portfolio" placeholder="Portfolio URL (optional)">
+                <button id="signup-button">Sign Up</button>
+            </div>
         </div>
 
-        <h2>Community Members</h2>
+        <h2>Community Members (<span id="member-count">0</span>)</h2>
         <div class="community-members" id="community-members">
             <!-- Members will be dynamically inserted here -->
         </div>
@@ -214,6 +258,29 @@
         </div>
     </div>
 
+    <!-- View Post Modal -->
+    <div id="view-post-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="post-content"></div>
+            <div id="post-replies"></div>
+            <div id="reply-form">
+                <textarea id="reply-input" placeholder="Your reply"></textarea>
+                <button id="submit-reply">Submit Reply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Idea Modal -->
+    <div id="edit-idea-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Idea</h2>
+            <textarea id="edit-idea-input" maxlength="280"></textarea>
+            <button id="update-idea-button">Update Idea</button>
+        </div>
+    </div>
+
     <!-- Auth Success Modal -->
     <div id="auth-success-modal" class="modal">
         <div class="modal-content">
@@ -228,14 +295,14 @@
     <script>
         // Firebase configuration
         const firebaseConfig = {
-  apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
-  authDomain: "galactica-f174c.firebaseapp.com",
-  projectId: "galactica-f174c",
-  storageBucket: "galactica-f174c.appspot.com",
-  messagingSenderId: "152146817639",
-  appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
-  measurementId: "G-T19QCVB3F1"
-};
+            apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
+            authDomain: "galactica-f174c.firebaseapp.com",
+            projectId: "galactica-f174c",
+            storageBucket: "galactica-f174c.appspot.com",
+            messagingSenderId: "152146817639",
+            appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
+            measurementId: "G-T19QCVB3F1"
+        };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -255,40 +322,44 @@
         const deleteAccountButton = document.getElementById('delete-account-button');
         const editProfileModal = document.getElementById('edit-profile-modal');
         const deleteAccountModal = document.getElementById('delete-account-modal');
+        const viewPostModal = document.getElementById('view-post-modal');
+        const editIdeaModal = document.getElementById('edit-idea-modal');
         const authSuccessModal = document.getElementById('auth-success-modal');
         const updateProfileButton = document.getElementById('update-profile-button');
         const confirmDeleteAccountButton = document.getElementById('confirm-delete-account');
         const cancelDeleteAccountButton = document.getElementById('cancel-delete-account');
         const communityMembers = document.getElementById('community-members');
+        const joinCommunityHeading = document.getElementById('join-community-heading');
+        const communityLink = document.getElementById('community-link');
+        const showLoginButton = document.getElementById('show-login');
+        const showSignupButton = document.getElementById('show-signup');
+        const loginFields = document.getElementById('login-fields');
+        const signupFields = document.getElementById('signup-fields');
         const welcomeMessage = document.getElementById('welcome-message');
-
-        // Set welcome message
-        function setWelcomeMessage() {
-            welcomeMessage.innerHTML = `
-                <h2>Welcome to Galactica - Ideas Board</h2>
-                <p>Share and explore innovative ideas with our community. Sign up or log in to contribute!</p>
-            `;
-        }
+        const memberCount = document.getElementById('member-count');
 
         // Authentication state observer
         auth.onAuthStateChanged((user) => {
             if (user) {
                 authStatus.textContent = `Logged in as ${user.email}`;
-                welcomeMessage.style.display = 'none';
                 authForm.style.display = 'none';
                 ideaForm.style.display = 'block';
                 logoutButton.style.display = 'inline-block';
                 editProfileButton.style.display = 'inline-block';
                 deleteAccountButton.style.display = 'inline-block';
-                loadUserProfile(user.uid);
+                communityLink.style.display = 'inline-block';
+                joinCommunityHeading.style.display = 'none';
+                welcomeMessage.style.display = 'none';
             } else {
-                setWelcomeMessage();
                 authStatus.textContent = '';
                 authForm.style.display = 'block';
                 ideaForm.style.display = 'none';
                 logoutButton.style.display = 'none';
                 editProfileButton.style.display = 'none';
                 deleteAccountButton.style.display = 'none';
+                communityLink.style.display = 'none';
+                joinCommunityHeading.style.display = 'block';
+                welcomeMessage.style.display = 'block';
             }
             updateMembersList();
             loadIdeas();
@@ -310,7 +381,7 @@
                 .then(() => {
                     showAuthSuccessModal("Successfully signed up!");
                 })
-                .catch((error) => alert(error.message));
+                .catch((error) => showErrorMessage(error.message));
         }
 
         // Login
@@ -319,7 +390,7 @@
                 .then(() => {
                     showAuthSuccessModal("Successfully logged in!");
                 })
-                .catch((error) => alert(error.message));
+                .catch((error) => showErrorMessage(error.message));
         }
 
         // Logout
@@ -330,7 +401,8 @@
         }
 
         // Load User Profile
-        function loadUserProfile(userId) {
+      // Load User Profile
+      function loadUserProfile(userId) {
             db.collection('users').doc(userId).get()
                 .then((doc) => {
                     if (doc.exists) {
@@ -355,11 +427,9 @@
                     portfolio: portfolio
                 })
                 .then(() => {
-                    console.log("Profile updated");
-                    editProfileModal.style.display = 'none';
-                    showAuthSuccessModal("Profile updated successfully!");
+                    showSuccessMessage("Profile updated successfully!", editProfileModal);
                 })
-                .catch((error) => console.error("Error updating profile:", error));
+                .catch((error) => showErrorMessage("Error updating profile: " + error.message));
             }
         }
 
@@ -370,7 +440,6 @@
                 db.collection('users').doc(user.uid).delete()
                     .then(() => user.delete())
                     .then(() => {
-                        console.log("Account deleted");
                         deleteAccountModal.style.display = 'none';
                         showAuthSuccessModal("Account deleted successfully!");
                     })
@@ -385,15 +454,13 @@
                 db.collection('ideas').add({
                     text: ideaText.trim(),
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    authorId: user.uid,
-                    upvotes: 0,
-                    downvotes: 0
+                    authorId: user.uid
                 })
-                .then(() => {
-                    ideaInput.value = '';
-                    console.log("Idea submitted");
-                })
-                .catch((error) => console.error("Error submitting idea:", error));
+                    .then(() => {
+                        ideaInput.value = '';
+                        loadIdeas();
+                    })
+                    .catch((error) => console.error("Error submitting idea:", error));
             }
         }
 
@@ -413,65 +480,120 @@
                         </div>
                     </div>
                     <p>${idea.text}</p>
-              <div class="idea-actions">
-                        <div class="vote-buttons">
-                            <button onclick="vote('${id}', 'up')">↑ ${idea.upvotes}</button>
-                            <button onclick="vote('${id}', 'down')">↓ ${idea.downvotes}</button>
-                        </div>
-                        <button onclick="showReplyForm('${id}')">Reply</button>
+                    <div class="idea-actions">
                         ${idea.authorId === auth.currentUser?.uid ? `
                             <button onclick="editIdea('${id}')">Edit</button>
                             <button onclick="deleteIdea('${id}')">Delete</button>
                         ` : ''}
+                        <button class="reply-button" onclick="viewPost('${id}')">View Post</button>
                     </div>
-                    <div id="reply-form-${id}" style="display: none;">
-                        <textarea id="reply-input-${id}" placeholder="Your reply"></textarea>
-                        <button onclick="submitReply('${id}')">Submit Reply</button>
-                    </div>
-                    <div id="replies-${id}"></div>
                 `;
             });
             return ideaDiv;
         }
 
-        // Vote on Idea
-        function vote(ideaId, voteType) {
-            const user = auth.currentUser;
-            if (user) {
-                const ideaRef = db.collection('ideas').doc(ideaId);
-                ideaRef.update({
-                    [voteType === 'up' ? 'upvotes' : 'downvotes']: firebase.firestore.FieldValue.increment(1)
-                })
-                .catch((error) => console.error("Error voting:", error));
-            } else {
-                alert('Please log in to vote.');
+        // Edit Idea
+        function editIdea(id) {
+            const ideaRef = db.collection('ideas').doc(id);
+            ideaRef.get().then((doc) => {
+                if (doc.exists && doc.data().authorId === auth.currentUser?.uid) {
+                    const idea = doc.data();
+                    document.getElementById('edit-idea-input').value = idea.text;
+                    editIdeaModal.style.display = 'block';
+                    document.getElementById('update-idea-button').onclick = () => {
+                        const newText = document.getElementById('edit-idea-input').value;
+                        if (newText.trim() !== '' && newText.length <= 280) {
+                            ideaRef.update({ text: newText.trim() })
+                                .then(() => {
+                                    editIdeaModal.style.display = 'none';
+                                    loadIdeas();
+                                })
+                                .catch((error) => console.error("Error updating idea:", error));
+                        }
+                    };
+                }
+            });
+        }
+
+        // Delete Idea
+        function deleteIdea(id) {
+            if (confirm("Are you sure you want to delete this idea?")) {
+                db.collection('ideas').doc(id).delete()
+                    .then(() => loadIdeas())
+                    .catch((error) => console.error("Error deleting idea:", error));
             }
         }
 
-        // Show Reply Form
-        function showReplyForm(ideaId) {
-            document.getElementById(`reply-form-${ideaId}`).style.display = 'block';
+        // View Post
+        function viewPost(ideaId) {
+            const postContent = document.getElementById('post-content');
+            const postReplies = document.getElementById('post-replies');
+            const replyForm = document.getElementById('reply-form');
+
+            db.collection('ideas').doc(ideaId).get().then((doc) => {
+                if (doc.exists) {
+                    const idea = doc.data();
+                    postContent.innerHTML = createIdeaElement(doc.id, idea).innerHTML;
+                    loadReplies(ideaId);
+                    viewPostModal.style.display = 'block';
+
+                    document.getElementById('submit-reply').onclick = () => {
+                        const replyText = document.getElementById('reply-input').value;
+                        submitReply(ideaId, replyText);
+                    };
+                }
+            });
         }
 
         // Submit Reply
-        function submitReply(ideaId) {
+        function submitReply(ideaId, replyText) {
             const user = auth.currentUser;
-            if (user) {
-                const replyText = document.getElementById(`reply-input-${ideaId}`).value.trim();
-                if (replyText) {
-                    db.collection('ideas').doc(ideaId).collection('replies').add({
-                        text: replyText,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                        authorId: user.uid
-                    })
+            if (user && replyText.trim() !== '') {
+                db.collection('ideas').doc(ideaId).collection('replies').add({
+                    text: replyText.trim(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    authorId: user.uid
+                })
                     .then(() => {
-                        document.getElementById(`reply-input-${ideaId}`).value = '';
-                        document.getElementById(`reply-form-${ideaId}`).style.display = 'none';
+                        document.getElementById('reply-input').value = '';
+                        loadReplies(ideaId);
                     })
                     .catch((error) => console.error("Error submitting reply:", error));
-                }
-            } else {
-                alert('Please log in to reply.');
+            }
+        }
+
+        // Load Replies
+        function loadReplies(ideaId) {
+            const postReplies = document.getElementById('post-replies');
+            postReplies.innerHTML = '';
+            db.collection('ideas').doc(ideaId).collection('replies').orderBy('timestamp', 'asc').get()
+                .then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const reply = doc.data();
+                        const replyElement = document.createElement('div');
+                        replyElement.className = 'reply';
+                        db.collection('users').doc(reply.authorId).get().then((userDoc) => {
+                            const userData = userDoc.exists ? userDoc.data() : { displayName: 'Anonymous' };
+                            replyElement.innerHTML = `
+                                <p><strong>${userData.displayName}</strong>: ${reply.text}</p>
+                                <small>${new Date(reply.timestamp.toDate()).toLocaleString()}</small>
+                                ${reply.authorId === auth.currentUser?.uid ? `
+                                    <button onclick="deleteReply('${ideaId}', '${doc.id}')">Delete</button>
+                                ` : ''}
+                            `;
+                            postReplies.appendChild(replyElement);
+                        });
+                    });
+                })
+                .catch((error) => console.error("Error loading replies:", error));
+        }
+
+        // Delete Reply
+        function deleteReply(ideaId, replyId) {
+            if (confirm("Are you sure you want to delete this reply?")) {
+                db.collection('ideas').doc(ideaId).collection('replies').doc(replyId).delete()
+                    .then(() => loadReplies(ideaId))
+                    .catch((error) => console.error("Error deleting reply:", error));
             }
         }
 
@@ -479,6 +601,7 @@
         function updateMembersList() {
             db.collection('users').get().then((snapshot) => {
                 communityMembers.innerHTML = '';
+                let count = 0;
                 snapshot.forEach((doc) => {
                     const user = doc.data();
                     const memberDiv = document.createElement('div');
@@ -490,7 +613,9 @@
                         ${user.portfolio ? `[<a href="${user.portfolio}" target="_blank">portfolio</a>]` : ''}
                     `;
                     communityMembers.appendChild(memberDiv);
+                    count++;
                 });
+                memberCount.textContent = count;
             }).catch((error) => console.error("Error updating members list:", error));
         }
 
@@ -512,10 +637,27 @@
             authSuccessModal.style.display = 'block';
         }
 
+        // Show Error Message
+        function showErrorMessage(message) {
+            alert(message); // You can replace this with a more elegant solution if desired
+        }
+
+        // Show Success Message
+        function showSuccessMessage(message, modalElement) {
+            const successMessage = document.createElement('p');
+            successMessage.textContent = message;
+            successMessage.style.color = 'green';
+            modalElement.querySelector('.modal-content').appendChild(successMessage);
+            setTimeout(() => {
+                successMessage.remove();
+                modalElement.style.display = 'none';
+            }, 2000);
+        }
+
         // Event Listeners
         signupButton.addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
             const displayName = document.getElementById('display-name').value;
             const linkedin = document.getElementById('linkedin').value;
             const github = document.getElementById('github').value;
@@ -524,8 +666,8 @@
         });
 
         loginButton.addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
             login(email, password);
         });
 
@@ -556,8 +698,23 @@
             deleteAccountModal.style.display = 'none';
         });
 
+        communityLink.addEventListener('click', () => {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+        });
+
+        showLoginButton.addEventListener('click', () => {
+            loginFields.style.display = 'block';
+            signupFields.style.display = 'none';
+        });
+
+        showSignupButton.addEventListener('click', () => {
+            loginFields.style.display = 'none';
+            signupFields.style.display = 'block';
+        });
+
         // Close modals when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == editProfileModal) {
                 editProfileModal.style.display = "none";
             }
@@ -567,17 +724,22 @@
             if (event.target == authSuccessModal) {
                 authSuccessModal.style.display = "none";
             }
+            if (event.target == viewPostModal) {
+                viewPostModal.style.display = "none";
+            }
+            if (event.target == editIdeaModal) {
+                editIdeaModal.style.display = "none";
+            }
         }
 
         // Close button functionality for modals
         document.querySelectorAll('.close').forEach(closeButton => {
-            closeButton.onclick = function() {
+            closeButton.onclick = function () {
                 this.parentElement.parentElement.style.display = 'none';
             }
         });
 
         // Initialize
-        setWelcomeMessage();
         updateMembersList();
         loadIdeas();
     </script>
