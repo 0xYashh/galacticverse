@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactica - Research Nuggets</title>
+    <style>
+     @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+
+        body {
+            background: black;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont";
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.2rem; color: #fff; }
+
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+
+        .nugget-form, .nugget-stream {
+            margin-top: 20px;
+        }
+
+        textarea, input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: white;
+            font-family: inherit;
+        }
+
+        button {
+            background: rgb(195, 122, 255);
+            color: black;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: rgb(215, 166, 252);
+        }
+
+        .nugget {
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .nugget-meta {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .nugget-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .nugget-actions button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+
+        .auth-form {
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            margin-bottom: 10px;
+        }
+
+        .social-links a {
+            margin-right: 10px;
+        }
+
+        .buttons {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+
+        .tag-filter {
+            margin-top: 20px;
+        }
+
+        .tag-filter select {
+            width: calc(100% - 80px);
+            padding: 10px;
+            margin-right: 10px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: white;
+            font-family: inherit;
+        }
+
+        .tag-filter button {
+            width: 70px;
+        }
+
+        .tag-filter select option {
+            background: #1a1a1a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <a href="/index.html">[home]</a>
+    <a href="/lab/g-lab.html">[galactica-lab]</a>
+
+    <h1>Galactica - research nuggets.</h1>
+
+    <div id="auth-container">
+        <div id="login-form" class="auth-form">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button id="login-button" class="buttons">Login</button>
+        </div>
+
+        <div id="signup-form" class="auth-form">
+            <h2>Sign Up</h2>
+            <input type="text" id="signup-displayname" placeholder="Display Name">
+            <input type="email" id="signup-email" placeholder="Email">
+            <input type="password" id="signup-password" placeholder="Password">
+            <input type="text" id="signup-github" placeholder="GitHub (optional)">
+            <input type="text" id="signup-x" placeholder="X (Twitter) handle">
+            <input type="text" id="signup-linkedin" placeholder="LinkedIn (optional)">
+            <button id="signup-button" class="buttons">Sign Up</button>
+        </div>
+    </div>
+
+    <div id="user-info" class="user-info" style="display: none;">
+        <p>Welcome,to research nuggest<span id="user-displayname"></span>!</p>
+        <button id="logout-button" class="buttons">Logout</button>
+    </div>
+
+    <div class="nugget-form" style="display: none;">
+        <h2>share your insight:</h2>
+        <textarea id="nugget-input" maxlength="280" placeholder="Share a research insight (max 280 characters)"></textarea>
+        <input type="text" id="source-input" placeholder="Source URL (optional)">
+        <input type="text" id="tags-input" placeholder="Tags (comma-separated)">
+        <button id="submit-nugget" class="buttons">Submit Nugget</button>
+    </div>
+
+    <div class="nugget-stream">
+        <h2>recent nuggets:</h2>
+        <div id="nuggets-container">
+            <!-- Nuggets will be dynamically inserted here -->
+        </div>
+    </div>
+     
+    <div class="tag-filter">
+        <select id="tag-select">
+            <option value="">All Tags</option>
+        </select>
+        <button id="filter-button" class="buttons">Filter</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
+            authDomain: "galactica-f174c.firebaseapp.com",
+            projectId: "galactica-f174c",
+            storageBucket: "galactica-f174c.appspot.com",
+            messagingSenderId: "152146817639",
+            appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
+            measurementId: "G-T19QCVB3F1"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // DOM Elements
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const userInfo = document.getElementById('user-info');
+        const userDisplayName = document.getElementById('user-displayname');
+        const logoutButton = document.getElementById('logout-button');
+        const nuggetForm = document.querySelector('.nugget-form');
+        const nuggetInput = document.getElementById('nugget-input');
+        const sourceInput = document.getElementById('source-input');
+        const tagsInput = document.getElementById('tags-input');
+        const submitNuggetButton = document.getElementById('submit-nugget');
+        const nuggetsContainer = document.getElementById('nuggets-container');
+
+        // Authentication
+        document.getElementById('login-button').addEventListener('click', () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            auth.signInWithEmailAndPassword(email, password)
+                .catch((error) => console.error("Error logging in:", error));
+        });
+
+        document.getElementById('signup-button').addEventListener('click', () => {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const displayName = document.getElementById('signup-displayname').value;
+            const github = document.getElementById('signup-github').value;
+            const x = document.getElementById('signup-x').value;
+            const linkedin = document.getElementById('signup-linkedin').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        displayName: displayName,
+                        github: github,
+                        x: x,
+                        linkedin: linkedin
+                    });
+                })
+                .catch((error) => console.error("Error signing up:", error));
+        });
+
+        logoutButton.addEventListener('click', () => {
+            auth.signOut().catch((error) => console.error("Error logging out:", error));
+        });
+
+        // Submit Nugget
+        submitNuggetButton.addEventListener('click', () => {
+            const nuggetText = nuggetInput.value;
+            const sourceUrl = sourceInput.value;
+            const tags = tagsInput.value.split(',').map(tag => tag.trim());
+            const user = auth.currentUser;
+
+            if (user && nuggetText.trim() !== '') {
+                db.collection('nuggets').add({
+                    text: nuggetText.trim(),
+                    sourceUrl: sourceUrl,
+                    tags: tags,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    authorId: user.uid
+                })
+                .then(() => {
+                    nuggetInput.value = '';
+                    sourceInput.value = '';
+                    tagsInput.value = '';
+                    loadNuggets();
+                })
+                .catch((error) => console.error("Error submitting nugget:", error));
+            }
+        });
+
+        // Load Nuggets
+        function loadNuggets() {
+            db.collection('nuggets').orderBy('timestamp', 'desc').limit(10).get().then((snapshot) => {
+                nuggetsContainer.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const nugget = doc.data();
+                    createNuggetElement(doc.id, nugget);
+                });
+            }).catch((error) => console.error("Error loading nuggets:", error));
+        }
+
+        // Create Nugget Element
+        function createNuggetElement(id, nugget) {
+            const nuggetDiv = document.createElement('div');
+            nuggetDiv.className = 'nugget';
+            db.collection('users').doc(nugget.authorId).get().then((doc) => {
+                const userData = doc.exists ? doc.data() : { displayName: 'Anonymous' };
+                nuggetDiv.innerHTML = `
+                    <div class="nugget-meta">
+                        > posted by ${userData.displayName} - ${new Date(nugget.timestamp.toDate()).toLocaleString()}
+                    </div>
+                    <p>${nugget.text}</p>
+                    ${nugget.sourceUrl ? `<a href="${nugget.sourceUrl}" target="_blank">Source</a>` : ''}
+                    <div>Tags: ${nugget.tags.join(', ')}</div>
+                    <div class="social-links">
+                        ${userData.github ? `<a href="https://github.com/${userData.github}" target="_blank">GitHub</a>` : ''}
+                        ${userData.x ? `<a href="https://twitter.com/${userData.x}" target="_blank">X</a>` : ''}
+                        ${userData.linkedin ? `<a href="https://www.linkedin.com/in/${userData.linkedin}" target="_blank">LinkedIn</a>` : ''}
+                    </div>
+                `;
+                nuggetsContainer.appendChild(nuggetDiv);
+            });
+        }
+
+        // Auth state change listener
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'none';
+                userInfo.style.display = 'block';
+                nuggetForm.style.display = 'block';
+                db.collection('users').doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        userDisplayName.textContent = doc.data().displayName;
+                    }
+                });
+            } else {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'block';
+                userInfo.style.display = 'none';
+                nuggetForm.style.display = 'none';
+            }
+            loadNuggets();
+        });
+        function populateTagSelect() {
+    const tagSelect = document.getElementById('tag-select');
+    db.collection('nuggets').get().then((snapshot) => {
+        const tags = new Set();
+        snapshot.forEach((doc) => {
+            doc.data().tags.forEach(tag => tags.add(tag));
+        });
+        tags.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            tagSelect.appendChild(option);
+        });
+    });
+}
+
+document.getElementById('filter-button').addEventListener('click', () => {
+    const selectedTag = document.getElementById('tag-select').value;
+    db.collection('nuggets')
+        .orderBy('timestamp', 'desc')
+        .get()
+        .then((snapshot) => {
+            nuggetsContainer.innerHTML = '';
+            snapshot.forEach((doc) => {
+                const nugget = doc.data();
+                if (selectedTag === '' || nugget.tags.includes(selectedTag)) {
+                    createNuggetElement(doc.id, nugget);
+                }
+            });
+        });
+});
+
+// Call this function after initial load
+populateTagSelect();
+        // Initial load
+        loadNuggets();
+    </script>
+</body>
+</html>
