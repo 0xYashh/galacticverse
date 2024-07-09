@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
         @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
-        
+
         body {
             background: black;
             color: rgb(255, 255, 255);
@@ -18,12 +19,21 @@
             margin: 0 auto;
         }
 
-        h1, h2 { 
+        h1,
+        h2 {
             font-family: "NB International Regular Webfont", sans-serif;
+
         }
 
-        h1 { font-size: 2rem; margin-bottom: 20px; }
-        h2 { font-size: 1.5rem; color: #fff; }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #fff;
+        }
 
         a {
             color: rgb(195, 122, 255);
@@ -35,11 +45,13 @@
             text-decoration: underline;
         }
 
-        .navigation, .auth-buttons {
+        .navigation,
+        .auth-buttons {
             margin-bottom: 20px;
         }
 
-        .navigation a, .auth-buttons button {
+        .navigation a,
+        .auth-buttons button {
             margin-right: 10px;
         }
 
@@ -72,7 +84,8 @@
             margin-top: 20px;
         }
 
-        .thread, .reply {
+        .thread,
+        .reply {
             margin-bottom: 20px;
             padding: 10px;
             background: rgba(195, 122, 255, 0.1);
@@ -84,21 +97,29 @@
             margin-top: 10px;
         }
 
-        .thread-header, .reply-header {
+        .thread-header,
+        .reply-header {
             font-size: 0.9em;
             color: #888;
             margin-bottom: 5px;
         }
 
-        .thread-content, .reply-content {
+        .thread-content,
+        .reply-content {
             margin-bottom: 10px;
         }
 
-        .post-form, .reply-form, .auth-form {
+        .post-form,
+        .reply-form,
+        .auth-form {
             margin-top: 20px;
         }
 
-        .post-form input, .post-form textarea, .reply-form input, .reply-form textarea, .auth-form input {
+        .post-form input,
+        .post-form textarea,
+        .reply-form input,
+        .reply-form textarea,
+        .auth-form input {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -107,7 +128,10 @@
             color: white;
         }
 
-        .post-form button, .reply-form button, .auth-form button, .auth-buttons button {
+        .post-form button,
+        .reply-form button,
+        .auth-form button,
+        .auth-buttons button {
             background: rgb(195, 122, 255);
             color: black;
             border: none;
@@ -115,7 +139,10 @@
             cursor: pointer;
         }
 
-        .post-form button:hover, .reply-form button:hover, .auth-form button:hover, .auth-buttons button:hover {
+        .post-form button:hover,
+        .reply-form button:hover,
+        .auth-form button:hover,
+        .auth-buttons button:hover {
             background: rgb(215, 166, 252);
         }
 
@@ -138,6 +165,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navigation">
         <a href="/index.html">[home]</a>
@@ -185,63 +213,61 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script>
-const firebaseConfig = {
-   apiKey: process.env.FIREBASE_API_KEY,
-   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-   projectId: process.env.FIREBASE_PROJECT_ID,
-   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-   appId: process.env.FIREBASE_APP_ID,
-   measurementId: process.env.FIREBASE_MEASUREMENT_ID
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
+            authDomain: "galactica-f174c.firebaseapp.com",
+            projectId: "galactica-f174c",
+            storageBucket: "galactica-f174c.appspot.com",
+            messagingSenderId: "152146817639",
+            appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
+            measurementId: "G-T19QCVB3F1"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
-firebase.initializeApp(firebaseConfig);
+        let currentBoard = '';
+        let currentUser = null;
 
-const db = firebase.firestore();
-const auth = firebase.auth();
+        const boards = [
+            { id: 'quantum-frontiers', name: 'Quantum Frontiers' },
+            { id: 'ai-ethics', name: 'AI Ethics & Society' },
+            { id: 'space-colonization', name: 'Space Colonization' },
+            { id: 'biotech-revolution', name: 'Biotech Revolution' },
+            { id: 'future-energy', name: 'Future of Energy' },
+            { id: 'transhuman-tech', name: 'Transhuman Technologies' },
+            { id: 'nanotech-innovations', name: 'Nanotech Innovations' },
+            { id: 'virtual-reality-worlds', name: 'Virtual Reality Worlds' }
+        ];
 
-let currentBoard = '';
-let currentUser = null;
+        function loadBoards() {
+            const boardsDiv = document.getElementById('boards');
+            boards.forEach(board => {
+                const boardElement = document.createElement('div');
+                boardElement.className = 'board';
+                boardElement.innerHTML = `<h3>${board.name}</h3>`;
+                boardElement.addEventListener('click', () => loadThreads(board.id, board.name));
+                boardsDiv.appendChild(boardElement);
+            });
+        }
 
-const boards = [
-    { id: 'quantum-frontiers', name: 'Quantum Frontiers' },
-    { id: 'ai-ethics', name: 'AI Ethics & Society' },
-    { id: 'space-colonization', name: 'Space Colonization' },
-    { id: 'biotech-revolution', name: 'Biotech Revolution' },
-    { id: 'future-energy', name: 'Future of Energy' },
-    { id: 'transhuman-tech', name: 'Transhuman Technologies' },
-    { id: 'nanotech-innovations', name: 'Nanotech Innovations' },
-    { id: 'virtual-reality-worlds', name: 'Virtual Reality Worlds' }
-];
+        function loadThreads(boardId, boardName) {
+            currentBoard = boardId;
+            document.getElementById('current-board-title').textContent = boardName;
+            document.getElementById('boards').style.display = 'none';
+            document.getElementById('threads').style.display = 'block';
+            document.getElementById('post-form').style.display = currentUser ? 'block' : 'none';
 
-function loadBoards() {
-    const boardsDiv = document.getElementById('boards');
-    boards.forEach(board => {
-        const boardElement = document.createElement('div');
-        boardElement.className = 'board';
-        boardElement.innerHTML = `<h3>${board.name}</h3>`;
-        boardElement.addEventListener('click', () => loadThreads(board.id, board.name));
-        boardsDiv.appendChild(boardElement);
-    });
-}
+            const threadsDiv = document.getElementById('thread-list');
+            threadsDiv.innerHTML = '<p>Loading threads...</p>';
 
-function loadThreads(boardId, boardName) {
-    currentBoard = boardId;
-    document.getElementById('current-board-title').textContent = boardName;
-    document.getElementById('boards').style.display = 'none';
-    document.getElementById('threads').style.display = 'block';
-    document.getElementById('post-form').style.display = currentUser ? 'block' : 'none';
-
-    const threadsDiv = document.getElementById('thread-list');
-    threadsDiv.innerHTML = '<p>Loading threads...</p>';
-
-    db.collection(boardId).orderBy('timestamp', 'desc').limit(20).get().then((querySnapshot) => {
-        threadsDiv.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const thread = doc.data();
-            const threadElement = document.createElement('div');
-            threadElement.className = 'thread';
-            threadElement.innerHTML = `
+            db.collection(boardId).orderBy('timestamp', 'desc').limit(20).get().then((querySnapshot) => {
+                threadsDiv.innerHTML = '';
+                querySnapshot.forEach((doc) => {
+                    const thread = doc.data();
+                    const threadElement = document.createElement('div');
+                    threadElement.className = 'thread';
+                    threadElement.innerHTML = `
                 <div class="thread-header">${thread.displayName} ${new Date(thread.timestamp.toDate()).toLocaleString()} No.${doc.id}</div>
                 <div class="user-info">
                     ${thread.github ? `GitHub: ${thread.github} | ` : ''}
@@ -256,20 +282,20 @@ function loadThreads(boardId, boardName) {
                     <button onclick="postReply('${doc.id}')">Post Reply</button>
                 </div>
             `;
-            threadsDiv.appendChild(threadElement);
-            loadReplies(doc.id);
-        });
-    });
-}
+                    threadsDiv.appendChild(threadElement);
+                    loadReplies(doc.id);
+                });
+            });
+        }
 
-function loadReplies(threadId) {
-    db.collection(currentBoard).doc(threadId).collection('replies').orderBy('timestamp', 'asc').get().then((querySnapshot) => {
-        const repliesDiv = document.getElementById(`replies-${threadId}`);
-        querySnapshot.forEach((doc) => {
-            const reply = doc.data();
-            const replyElement = document.createElement('div');
-            replyElement.className = 'reply';
-            replyElement.innerHTML = `
+        function loadReplies(threadId) {
+            db.collection(currentBoard).doc(threadId).collection('replies').orderBy('timestamp', 'asc').get().then((querySnapshot) => {
+                const repliesDiv = document.getElementById(`replies-${threadId}`);
+                querySnapshot.forEach((doc) => {
+                    const reply = doc.data();
+                    const replyElement = document.createElement('div');
+                    replyElement.className = 'reply';
+                    replyElement.innerHTML = `
                 <div class="reply-header">${reply.displayName} ${new Date(reply.timestamp.toDate()).toLocaleString()} No.${doc.id}</div>
                 <div class="user-info">
                     ${reply.github ? `GitHub: ${reply.github} | ` : ''}
@@ -278,175 +304,176 @@ function loadReplies(threadId) {
                 </div>
                 <div class="reply-content">${reply.content}</div>
             `;
-            repliesDiv.appendChild(replyElement);
-        });
-    });
-}
-
-function showReplyForm(threadId) {
-    document.getElementById(`reply-form-${threadId}`).style.display = 'block';
-}
-
-function postReply(threadId) {
-    const content = document.getElementById(`reply-content-${threadId}`).value;
-    if (content && currentUser) {
-        db.collection(currentBoard).doc(threadId).collection('replies').add({
-            content: content,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            displayName: currentUser.displayName,
-            github: currentUser.github,
-            twitter: currentUser.twitter,
-            linkedin: currentUser.linkedin
-        }).then(() => {
-            loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
-        });
-    }
-}
-
-document.getElementById('postThread').addEventListener('click', () => {
-    const content = document.getElementById('threadContent').value;
-    if (content && currentUser) {
-        db.collection(currentBoard).add({
-            content: content,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            displayName: currentUser.displayName,
-            github: currentUser.github,
-            twitter: currentUser.twitter,
-            linkedin: currentUser.linkedin
-        }).then(() => {
-            loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
-            document.getElementById('threadContent').value = '';
-        });
-    }
-});
-
-function showAuthForm(type) {
-    const authForm = document.getElementById('authForm');
-    const authFormTitle = document.getElementById('authFormTitle');
-    const authSubmitBtn = document.getElementById('authSubmitBtn');
-    const authDisplayName = document.getElementById('authDisplayName');
-    const authGithub = document.getElementById('authGithub');
-    const authTwitter = document.getElementById('authTwitter');
-    const authLinkedin = document.getElementById('authLinkedin');
-
-    authForm.style.display = 'block';
-    if (type === 'login') {
-        authFormTitle.textContent = 'Login';
-        authSubmitBtn.textContent = 'Login';
-        authDisplayName.style.display = 'none';
-        authGithub.style.display = 'none';
-        authTwitter.style.display = 'none';
-        authLinkedin.style.display = 'none';
-    } else {
-        authFormTitle.textContent = 'Sign Up';
-        authSubmitBtn.textContent = 'Sign Up';
-        authDisplayName.style.display = 'block';
-        authGithub.style.display = 'block';
-        authTwitter.style.display = 'block';
-        authLinkedin.style.display = 'block';
-    }
-}
-
-function handleAuth() {
-    const email = document.getElementById('authEmail').value;
-    const password = document.getElementById('authPassword').value;
-    const displayName = document.getElementById('authDisplayName').value;
-    const github = document.getElementById('authGithub').value;
-    const twitter = document.getElementById('authTwitter').value;
-    const linkedin = document.getElementById('authLinkedin').value;
-
-    if (document.getElementById('authSubmitBtn').textContent === 'Login') {
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Logged in successfully
-                document.getElementById('authForm').style.display = 'none';
-            })
-            .catch((error) => {
-                alert('Login failed: ' + error.message);
-            });
-    } else {
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed up successfully
-                return userCredential.user.updateProfile({
-                    displayName: displayName
-                }).then(() => {
-                    // Update custom claims
-                    return db.collection('users').doc(userCredential.user.uid).set({
-                        displayName: displayName,
-                        github: github,
-                        twitter: twitter,
-                        linkedin: linkedin
-                    });
+                    repliesDiv.appendChild(replyElement);
                 });
-            })
-            .then(() => {
-                document.getElementById('authForm').style.display = 'none';
-            })
-            .catch((error) => {
-                alert('Sign up failed: ' + error.message);
             });
-    }
-}
+        }
 
-function logout() {
-    auth.signOut().then(() => {
-        // Sign-out successful.
-        currentUser = null;
-        updateUIForAuth();
-    }).catch((error) => {
-        // An error happened.
-        console.error('Logout failed:', error);
-    });
-}
+        function showReplyForm(threadId) {
+            document.getElementById(`reply-form-${threadId}`).style.display = 'block';
+        }
 
-function updateUIForAuth() {
-    const loginBtn = document.getElementById('loginBtn');
-    const signupBtn = document.getElementById('signupBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const postForm = document.getElementById('post-form');
-
-    if (currentUser) {
-        loginBtn.style.display = 'none';
-        signupBtn.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
-        postForm.style.display = 'block';
-    } else {
-        loginBtn.style.display = 'inline-block';
-        signupBtn.style.display = 'inline-block';
-        logoutBtn.style.display = 'none';
-        postForm.style.display = 'none';
-    }
-}
-
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        currentUser = {
-            uid: user.uid,
-            displayName: user.displayName,
-            github: '',
-            twitter: '',
-            linkedin: ''
-        };
-
-        db.collection('users').doc(user.uid).get().then((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                currentUser.github = data.github;
-                currentUser.twitter = data.twitter;
-                currentUser.linkedin = data.linkedin;
+        function postReply(threadId) {
+            const content = document.getElementById(`reply-content-${threadId}`).value;
+            if (content && currentUser) {
+                db.collection(currentBoard).doc(threadId).collection('replies').add({
+                    content: content,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    displayName: currentUser.displayName,
+                    github: currentUser.github,
+                    twitter: currentUser.twitter,
+                    linkedin: currentUser.linkedin
+                }).then(() => {
+                    loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+                });
             }
-            updateUIForAuth();
-        });
-    } else {
-        currentUser = null;
-        updateUIForAuth();
-    }
-});
+        }
 
-// Initial load
-loadBoards();
+        document.getElementById('postThread').addEventListener('click', () => {
+            const content = document.getElementById('threadContent').value;
+            if (content && currentUser) {
+                db.collection(currentBoard).add({
+                    content: content,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    displayName: currentUser.displayName,
+                    github: currentUser.github,
+                    twitter: currentUser.twitter,
+                    linkedin: currentUser.linkedin
+                }).then(() => {
+                    loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+                    document.getElementById('threadContent').value = '';
+                });
+            }
+        });
+
+        function showAuthForm(type) {
+            const authForm = document.getElementById('authForm');
+            const authFormTitle = document.getElementById('authFormTitle');
+            const authSubmitBtn = document.getElementById('authSubmitBtn');
+            const authDisplayName = document.getElementById('authDisplayName');
+            const authGithub = document.getElementById('authGithub');
+            const authTwitter = document.getElementById('authTwitter');
+            const authLinkedin = document.getElementById('authLinkedin');
+
+            authForm.style.display = 'block';
+            if (type === 'login') {
+                authFormTitle.textContent = 'Login';
+                authSubmitBtn.textContent = 'Login';
+                authDisplayName.style.display = 'none';
+                authGithub.style.display = 'none';
+                authTwitter.style.display = 'none';
+                authLinkedin.style.display = 'none';
+            } else {
+                authFormTitle.textContent = 'Sign Up';
+                authSubmitBtn.textContent = 'Sign Up';
+                authDisplayName.style.display = 'block';
+                authGithub.style.display = 'block';
+                authTwitter.style.display = 'block';
+                authLinkedin.style.display = 'block';
+            }
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const displayName = document.getElementById('authDisplayName').value;
+            const github = document.getElementById('authGithub').value;
+            const twitter = document.getElementById('authTwitter').value;
+            const linkedin = document.getElementById('authLinkedin').value;
+
+            if (document.getElementById('authSubmitBtn').textContent === 'Login') {
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Logged in successfully
+                        document.getElementById('authForm').style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Login failed: ' + error.message);
+                    });
+            } else {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Signed up successfully
+                        return userCredential.user.updateProfile({
+                            displayName: displayName
+                        }).then(() => {
+                            // Update custom claims
+                            return db.collection('users').doc(userCredential.user.uid).set({
+                                displayName: displayName,
+                                github: github,
+                                twitter: twitter,
+                                linkedin: linkedin
+                            });
+                        });
+                    })
+                    .then(() => {
+                        document.getElementById('authForm').style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Sign up failed: ' + error.message);
+                    });
+            }
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                // Sign-out successful.
+                currentUser = null;
+                updateUIForAuth();
+            }).catch((error) => {
+                // An error happened.
+                console.error('Logout failed:', error);
+            });
+        }
+
+        function updateUIForAuth() {
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const postForm = document.getElementById('post-form');
+
+            if (currentUser) {
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                postForm.style.display = 'block';
+            } else {
+                loginBtn.style.display = 'inline-block';
+                signupBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
+                postForm.style.display = 'none';
+            }
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    github: '',
+                    twitter: '',
+                    linkedin: ''
+                };
+
+                db.collection('users').doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        currentUser.github = data.github;
+                        currentUser.twitter = data.twitter;
+                        currentUser.linkedin = data.linkedin;
+                    }
+                    updateUIForAuth();
+                });
+            } else {
+                currentUser = null;
+                updateUIForAuth();
+            }
+        });
+
+        // Initial load
+        loadBoards();
 
     </script>
 </body>
+
 </html>
