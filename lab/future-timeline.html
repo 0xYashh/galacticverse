@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactica Lab - Future Predictions Timeline</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+        body {
+            background: black;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont",'rokkit';
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.2rem; color: #fff; }
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: rgb(195, 122, 255);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .prediction {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        .prediction::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: rgb(195, 122, 255);
+            border: 4px solid rgb(215, 166, 252);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .left {
+            left: 0;
+        }
+        .right {
+            left: 50%;
+        }
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid rgb(195, 122, 255);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent rgb(195, 122, 255);
+        }
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid rgb(195, 122, 255);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent rgb(195, 122, 255) transparent transparent;
+        }
+        .right::after {
+            left: -16px;
+        }
+        .content {
+            padding: 20px 30px;
+            background-color: rgb(30, 30, 30);
+            position: relative;
+            border-radius: 6px;
+        }
+        #predictionForm {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgb(50, 50, 50);
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: rgb(195, 122, 255);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: rgb(215, 166, 252);
+        }
+    </style>
+</head>
+<body>
+    <a href="/index.html">[home]</a>
+    <a href="/hq/g-hq.html">[galactica-hq]</a>
+    <a href="/lab/g-lab.html">[galactica-lab]</a>
+
+    <h1>Future Predictions Timeline</h1>
+    
+    <div id="timeline" class="timeline"></div>
+
+    <form id="predictionForm">
+        <input type="number" id="year" placeholder="Year" required>
+        <input type="text" id="title" placeholder="Prediction Title" required>
+        <textarea id="description" placeholder="Prediction Description" required></textarea>
+        <button type="submit">Add Prediction</button>
+    </form>
+
+    <script>
+        const timeline = document.getElementById('timeline');
+        const form = document.getElementById('predictionForm');
+
+        let predictions = JSON.parse(localStorage.getItem('predictions')) || [];
+
+        function renderTimeline() {
+            timeline.innerHTML = '';
+            predictions.sort((a, b) => a.year - b.year);
+            predictions.forEach((prediction, index) => {
+                const predictionElement = document.createElement('div');
+                predictionElement.classList.add('prediction');
+                predictionElement.classList.add(index % 2 === 0 ? 'left' : 'right');
+                predictionElement.innerHTML = `
+                    <div class="content">
+                        <h2>${prediction.year}</h2>
+                        <h3>${prediction.title}</h3>
+                        <p>${prediction.description}</p>
+                    </div>
+                `;
+                timeline.appendChild(predictionElement);
+            });
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const year = document.getElementById('year').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            predictions.push({ year, title, description });
+            localStorage.setItem('predictions', JSON.stringify(predictions));
+
+            renderTimeline();
+            form.reset();
+        });
+
+        renderTimeline();
+    </script>
+</body>
+</html>

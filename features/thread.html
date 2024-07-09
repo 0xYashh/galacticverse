@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactica Nexus</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+        
+        body {
+            background: black;
+            color: rgb(255, 255, 255);
+            font-family: "NB International Regular Webfont", sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 { 
+            font-family: "NB International Regular Webfont", sans-serif;
+        }
+
+        h1 { font-size: 2rem; margin-bottom: 20px; }
+        h2 { font-size: 1.5rem; color: #fff; }
+
+        a {
+            color: rgb(195, 122, 255);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: rgb(215, 166, 252);
+            text-decoration: underline;
+        }
+
+        .navigation, .auth-buttons {
+            margin-bottom: 20px;
+        }
+
+        .navigation a, .auth-buttons button {
+            margin-right: 10px;
+        }
+
+        .boards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .board {
+            border: 1px solid rgb(195, 122, 255);
+            padding: 10px;
+            background: rgba(195, 122, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .board:hover {
+            background: rgba(195, 122, 255, 0.2);
+        }
+
+        .board h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+
+        .threads {
+            border: 1px solid rgb(195, 122, 255);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .thread, .reply {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(195, 122, 255, 0.1);
+            border: 1px solid rgba(195, 122, 255, 0.3);
+        }
+
+        .reply {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .thread-header, .reply-header {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .thread-content, .reply-content {
+            margin-bottom: 10px;
+        }
+
+        .post-form, .reply-form, .auth-form {
+            margin-top: 20px;
+        }
+
+        .post-form input, .post-form textarea, .reply-form input, .reply-form textarea, .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: white;
+        }
+
+        .post-form button, .reply-form button, .auth-form button, .auth-buttons button {
+            background: rgb(195, 122, 255);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .post-form button:hover, .reply-form button:hover, .auth-form button:hover, .auth-buttons button:hover {
+            background: rgb(215, 166, 252);
+        }
+
+        .reply-button {
+            background: none;
+            border: none;
+            color: rgb(195, 122, 255);
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.9em;
+        }
+
+        .reply-button:hover {
+            text-decoration: underline;
+        }
+
+        .user-info {
+            font-size: 0.8em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navigation">
+        <a href="/index.html">[home]</a>
+        <a href="/hq/g-hq.html">[galactica-hq]</a>
+        <a href="/lab/g-lab.html">[galactica-lab]</a>
+    </nav>
+
+    <div class="auth-buttons">
+        <button id="loginBtn" onclick="showAuthForm('login')">Login</button>
+        <button id="signupBtn" onclick="showAuthForm('signup')">Sign Up</button>
+        <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
+    </div>
+
+    <div id="authForm" class="auth-form" style="display: none;">
+        <h2 id="authFormTitle">Login</h2>
+        <input type="email" id="authEmail" placeholder="Email">
+        <input type="password" id="authPassword" placeholder="Password">
+        <input type="text" id="authDisplayName" placeholder="Display Name" style="display: none;">
+        <input type="text" id="authGithub" placeholder="GitHub Handle (optional)" style="display: none;">
+        <input type="text" id="authTwitter" placeholder="Twitter Handle" style="display: none;">
+        <input type="text" id="authLinkedin" placeholder="LinkedIn Handle (optional)" style="display: none;">
+        <button id="authSubmitBtn" onclick="handleAuth()">Login</button>
+    </div>
+
+    <h1>Galactica Nexus</h1>
+
+    <div class="boards" id="boards">
+        <!-- Boards will be dynamically loaded here -->
+    </div>
+
+    <div class="threads" id="threads" style="display: none;">
+        <h2 id="current-board-title">Board Title</h2>
+        <div id="thread-list">
+            <!-- Threads will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <div class="post-form" id="post-form" style="display: none;">
+        <h2>Start a New Thread</h2>
+        <textarea id="threadContent" placeholder="Share your innovative idea or start a discussion"></textarea>
+        <button id="postThread">Post Thread</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let currentBoard = '';
+let currentUser = null;
+
+const boards = [
+    { id: 'quantum-frontiers', name: 'Quantum Frontiers' },
+    { id: 'ai-ethics', name: 'AI Ethics & Society' },
+    { id: 'space-colonization', name: 'Space Colonization' },
+    { id: 'biotech-revolution', name: 'Biotech Revolution' },
+    { id: 'future-energy', name: 'Future of Energy' },
+    { id: 'transhuman-tech', name: 'Transhuman Technologies' },
+    { id: 'nanotech-innovations', name: 'Nanotech Innovations' },
+    { id: 'virtual-reality-worlds', name: 'Virtual Reality Worlds' }
+];
+
+function loadBoards() {
+    const boardsDiv = document.getElementById('boards');
+    boards.forEach(board => {
+        const boardElement = document.createElement('div');
+        boardElement.className = 'board';
+        boardElement.innerHTML = `<h3>${board.name}</h3>`;
+        boardElement.addEventListener('click', () => loadThreads(board.id, board.name));
+        boardsDiv.appendChild(boardElement);
+    });
+}
+
+function loadThreads(boardId, boardName) {
+    currentBoard = boardId;
+    document.getElementById('current-board-title').textContent = boardName;
+    document.getElementById('boards').style.display = 'none';
+    document.getElementById('threads').style.display = 'block';
+    document.getElementById('post-form').style.display = currentUser ? 'block' : 'none';
+
+    const threadsDiv = document.getElementById('thread-list');
+    threadsDiv.innerHTML = '<p>Loading threads...</p>';
+
+    db.collection(boardId).orderBy('timestamp', 'desc').limit(20).get().then((querySnapshot) => {
+        threadsDiv.innerHTML = '';
+        querySnapshot.forEach((doc) => {
+            const thread = doc.data();
+            const threadElement = document.createElement('div');
+            threadElement.className = 'thread';
+            threadElement.innerHTML = `
+                <div class="thread-header">${thread.displayName} ${new Date(thread.timestamp.toDate()).toLocaleString()} No.${doc.id}</div>
+                <div class="user-info">
+                    ${thread.github ? `GitHub: ${thread.github} | ` : ''}
+                    ${thread.twitter ? `Twitter: ${thread.twitter} | ` : ''}
+                    ${thread.linkedin ? `LinkedIn: ${thread.linkedin}` : ''}
+                </div>
+                <div class="thread-content">${thread.content}</div>
+                ${currentUser ? `<button class="reply-button" onclick="showReplyForm('${doc.id}')">Reply</button>` : ''}
+                <div id="replies-${doc.id}"></div>
+                <div id="reply-form-${doc.id}" style="display: none;">
+                    <textarea id="reply-content-${doc.id}" placeholder="Your reply"></textarea>
+                    <button onclick="postReply('${doc.id}')">Post Reply</button>
+                </div>
+            `;
+            threadsDiv.appendChild(threadElement);
+            loadReplies(doc.id);
+        });
+    });
+}
+
+function loadReplies(threadId) {
+    db.collection(currentBoard).doc(threadId).collection('replies').orderBy('timestamp', 'asc').get().then((querySnapshot) => {
+        const repliesDiv = document.getElementById(`replies-${threadId}`);
+        querySnapshot.forEach((doc) => {
+            const reply = doc.data();
+            const replyElement = document.createElement('div');
+            replyElement.className = 'reply';
+            replyElement.innerHTML = `
+                <div class="reply-header">${reply.displayName} ${new Date(reply.timestamp.toDate()).toLocaleString()} No.${doc.id}</div>
+                <div class="user-info">
+                    ${reply.github ? `GitHub: ${reply.github} | ` : ''}
+                    ${reply.twitter ? `Twitter: ${reply.twitter} | ` : ''}
+                    ${reply.linkedin ? `LinkedIn: ${reply.linkedin}` : ''}
+                </div>
+                <div class="reply-content">${reply.content}</div>
+            `;
+            repliesDiv.appendChild(replyElement);
+        });
+    });
+}
+
+function showReplyForm(threadId) {
+    document.getElementById(`reply-form-${threadId}`).style.display = 'block';
+}
+
+function postReply(threadId) {
+    const content = document.getElementById(`reply-content-${threadId}`).value;
+    if (content && currentUser) {
+        db.collection(currentBoard).doc(threadId).collection('replies').add({
+            content: content,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            displayName: currentUser.displayName,
+            github: currentUser.github,
+            twitter: currentUser.twitter,
+            linkedin: currentUser.linkedin
+        }).then(() => {
+            loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+        });
+    }
+}
+
+document.getElementById('postThread').addEventListener('click', () => {
+    const content = document.getElementById('threadContent').value;
+    if (content && currentUser) {
+        db.collection(currentBoard).add({
+            content: content,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            displayName: currentUser.displayName,
+            github: currentUser.github,
+            twitter: currentUser.twitter,
+            linkedin: currentUser.linkedin
+        }).then(() => {
+            loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+            document.getElementById('threadContent').value = '';
+        });
+    }
+});
+
+function showAuthForm(type) {
+    const authForm = document.getElementById('authForm');
+    const authFormTitle = document.getElementById('authFormTitle');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authDisplayName = document.getElementById('authDisplayName');
+    const authGithub = document.getElementById('authGithub');
+    const authTwitter = document.getElementById('authTwitter');
+    const authLinkedin = document.getElementById('authLinkedin');
+
+    authForm.style.display = 'block';
+    if (type === 'login') {
+        authFormTitle.textContent = 'Login';
+        authSubmitBtn.textContent = 'Login';
+        authDisplayName.style.display = 'none';
+        authGithub.style.display = 'none';
+        authTwitter.style.display = 'none';
+        authLinkedin.style.display = 'none';
+    } else {
+        authFormTitle.textContent = 'Sign Up';
+        authSubmitBtn.textContent = 'Sign Up';
+        authDisplayName.style.display = 'block';
+        authGithub.style.display = 'block';
+        authTwitter.style.display = 'block';
+        authLinkedin.style.display = 'block';
+    }
+}
+
+function handleAuth() {
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    const displayName = document.getElementById('authDisplayName').value;
+    const github = document.getElementById('authGithub').value;
+    const twitter = document.getElementById('authTwitter').value;
+    const linkedin = document.getElementById('authLinkedin').value;
+
+    if (document.getElementById('authSubmitBtn').textContent === 'Login') {
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Logged in successfully
+                document.getElementById('authForm').style.display = 'none';
+            })
+            .catch((error) => {
+                alert('Login failed: ' + error.message);
+            });
+    } else {
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed up successfully
+                return userCredential.user.updateProfile({
+                    displayName: displayName
+                }).then(() => {
+                    // Update custom claims
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        displayName: displayName,
+                        github: github,
+                        twitter: twitter,
+                        linkedin: linkedin
+                    });
+                });
+            })
+            .then(() => {
+                document.getElementById('authForm').style.display = 'none';
+            })
+            .catch((error) => {
+                alert('Sign up failed: ' + error.message);
+            });
+    }
+}
+
+function logout() {
+    auth.signOut().then(() => {
+        // Sign-out successful.
+        currentUser = null;
+        updateUIForAuth();
+    }).catch((error) => {
+        // An error happened.
+        console.error('Logout failed:', error);
+    });
+}
+
+function updateUIForAuth() {
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const postForm = document.getElementById('post-form');
+
+    if (currentUser) {
+        loginBtn.style.display = 'none';
+        signupBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        postForm.style.display = 'block';
+    } else {
+        loginBtn.style.display = 'inline-block';
+        signupBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        postForm.style.display = 'none';
+    }
+}
+
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        currentUser = {
+            uid: user.uid,
+            displayName: user.displayName,
+            github: '',
+            twitter: '',
+            linkedin: ''
+        };
+
+        db.collection('users').doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                currentUser.github = data.github;
+                currentUser.twitter = data.twitter;
+                currentUser.linkedin = data.linkedin;
+            }
+            updateUIForAuth();
+        });
+    } else {
+        currentUser = null;
+        updateUIForAuth();
+    }
+});
+
+// Initial load
+loadBoards();
+
+    </script>
+</body>
+</html>
