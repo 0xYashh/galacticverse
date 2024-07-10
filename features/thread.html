@@ -6,163 +6,350 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galactica Nexus</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
-        @import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
+@import url('https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&family=Rokkitt:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://db.onlinewebfonts.com/c/23255fa3ff7a89589800cea3092f154f?family=NB+International+Regular+Webfont');
 
-        body {
-            background: black;
-            color: rgb(255, 255, 255);
-            font-family: "NB International Regular Webfont", sans-serif;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+body {
+    background: black;
+    color: rgb(255, 255, 255);
+    font-family: "NB International Regular Webfont", sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-        h1,
-        h2 {
-            font-family: "NB International Regular Webfont", sans-serif;
+h1, h2 {
+    font-family: "NB International Regular Webfont", sans-serif;
+}
 
-        }
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
+h2 {
+    font-size: 1.5rem;
+    color: #fff;
+}
 
-        h2 {
-            font-size: 1.5rem;
-            color: #fff;
-        }
+a {
+    color: rgb(195, 122, 255);
+    text-decoration: none;
+    transition: color 0.3s;
+}
 
-        a {
-            color: rgb(195, 122, 255);
-            text-decoration: none;
-        }
+a:hover {
+    color: rgb(215, 166, 252);
+    text-decoration: underline;
+}
 
-        a:hover {
-            color: rgb(215, 166, 252);
-            text-decoration: underline;
-        }
+.navigation, .auth-buttons {
+    margin-bottom: 20px;
+}
 
-        .navigation,
-        .auth-buttons {
-            margin-bottom: 20px;
-        }
+.navigation a, .auth-buttons button {
+    margin-right: 10px;
+}
 
-        .navigation a,
-        .auth-buttons button {
-            margin-right: 10px;
-        }
+.boards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 30px;
+}
 
-        .boards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 30px;
-        }
+.board {
+    border: 1px solid rgb(195, 122, 255);
+    padding: 10px;
+    background: rgba(195, 122, 255, 0.1);
+    transition: background 0.3s;
+}
 
-        .board {
-            border: 1px solid rgb(195, 122, 255);
-            padding: 10px;
-            background: rgba(195, 122, 255, 0.1);
-            transition: background 0.3s;
-        }
+.board:hover {
+    background: rgba(195, 122, 255, 0.2);
+}
 
-        .board:hover {
-            background: rgba(195, 122, 255, 0.2);
-        }
+.board h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+}
 
-        .board h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
-        }
+.threads {
+    border: 1px solid rgb(195, 122, 255);
+    padding: 20px;
+    margin-top: 20px;
+}
 
-        .threads {
-            border: 1px solid rgb(195, 122, 255);
-            padding: 20px;
-            margin-top: 20px;
-        }
+.thread, .reply {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(195, 122, 255, 0.066);
+    border: 1px solid rgba(195, 122, 255, 0.3);
+}
 
-        .thread,
-        .reply {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(195, 122, 255, 0.1);
-            border: 1px solid rgba(195, 122, 255, 0.3);
-        }
+.reply {
+    margin-left: 20px;
+    margin-top: 10px;
+}
 
-        .reply {
-            margin-left: 20px;
-            margin-top: 10px;
-        }
+.nested-reply {
+    margin-left: 40px;
+}
 
-        .thread-header,
-        .reply-header {
-            font-size: 0.9em;
-            color: #888;
-            margin-bottom: 5px;
-        }
+.thread-header, .reply-header {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 5px;
+}
 
-        .thread-content,
-        .reply-content {
-            margin-bottom: 10px;
-        }
+.thread-content, .reply-content {
+    margin-bottom: 10px;
+}
 
-        .post-form,
-        .reply-form,
-        .auth-form {
-            margin-top: 20px;
-        }
+.post-form, .reply-form, .auth-form {
+    margin-top: 20px;
+}
 
-        .post-form input,
-        .post-form textarea,
-        .reply-form input,
-        .reply-form textarea,
-        .auth-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: #1a1a1a;
-            border: 1px solid #3a3a3a;
-            color: white;
-        }
+.post-form input,
+.post-form textarea,
+.reply-form input,
+.reply-form textarea,
+.auth-form input,
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    color: white;
+    resize: vertical;
+    font-size: 0.9em;
+    max-width: 400px;
+}
 
-        .post-form button,
-        .reply-form button,
-        .auth-form button,
-        .auth-buttons button {
-            background: rgb(195, 122, 255);
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
+.post-form textarea,
+.reply-form textarea,
+.edit-textarea {
+    min-height: 80px;
+}
 
-        .post-form button:hover,
-        .reply-form button:hover,
-        .auth-form button:hover,
-        .auth-buttons button:hover {
-            background: rgb(215, 166, 252);
-        }
+.post-form button,
+.reply-form button,
+.auth-form button,
+.auth-buttons button,
+.modal-content button {
+    background: rgb(195, 122, 255);
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
 
-        .reply-button {
-            background: none;
-            border: none;
-            color: rgb(195, 122, 255);
-            cursor: pointer;
-            padding: 0;
-            font-size: 0.9em;
-        }
+.post-form button:hover,
+.reply-form button:hover,
+.auth-form button:hover,
+.auth-buttons button:hover,
+.modal-content button:hover {
+    background: rgb(215, 166, 252);
+}
 
-        .reply-button:hover {
-            text-decoration: underline;
-        }
+.reply-button, .edit-button, .delete-button {
+    background: none;
+    border: none;
+    color: rgba(195, 122, 255, 0.747);
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9em;
+    margin-right: 10px;
+    transition: color 0.3s;
+}
 
-        .user-info {
-            font-size: 0.8em;
-            color: #aaa;
-        }
+.reply-button:hover, .edit-button:hover, .delete-button:hover {
+    color: rgb(215, 166, 252);
+    text-decoration: underline;
+}
+
+.user-info {
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid rgb(195, 122, 255);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(195, 122, 255, 0.3);
+}
+
+.modal-content h2 {
+    color: rgb(195, 122, 255);
+    margin-bottom: 15px;
+}
+
+.close {
+    color: rgb(195, 122, 255);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.close:hover, .close:focus {
+    color: rgb(215, 166, 252);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.edit-textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 10px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    color: white;
+    padding: 10px;
+    resize: vertical;
+}
+
+.hidden {
+    display: none;
+}
+
+.quote {
+    color: #789922;
+    padding-left: 10px;
+    border-left: 2px solid #789922;
+    margin-bottom: 10px;
+}
+
+.save-changes-btn {
+    background: rgb(195, 122, 255);
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+    display: block;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.save-changes-btn:hover {
+    background: rgb(215, 166, 252);
+}
+/* Add this to your existing CSS */
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.save-button, .cancel-button {
+    background: rgb(195, 122, 255);
+    color: black;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+    border-radius: 4px;
+}
+
+.save-button:hover, .cancel-button:hover {
+    background: rgb(215, 166, 252);
+}
+
+.cancel-button {
+    background: #444;
+    color: white;
+}
+
+.cancel-button:hover {
+    background: #666;
+}
+
+.delete-confirmation-modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.delete-confirmation-content {
+    background-color: #1a1a1a;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid rgb(195, 122, 255);
+    width: 300px;
+    box-shadow: 0 0 10px rgba(195, 122, 255, 0.3);
+    text-align: center;
+}
+
+.delete-confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.confirm-delete-button, .cancel-delete-button {
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+    border: none;
+    border-radius: 4px;
+}
+
+.confirm-delete-button {
+    background-color:rgb(0, 0, 0);
+    color: white;
+    border: 1px solid rgb(195, 122, 255);
+}
+
+.confirm-delete-button:hover {
+    background-color:  rgba(195, 122, 255, 0.185);
+}
+
+.cancel-delete-button {
+    background-color:rgb(0, 0, 0);
+    color: white;
+    border: 1px solid rgb(195, 122, 255);
+}
+
+.cancel-delete-button:hover {
+    background-color:  rgba(195, 122, 255, 0.185);
+
+
+}
     </style>
 </head>
 
@@ -177,6 +364,7 @@
         <button id="loginBtn" onclick="showAuthForm('login')">Login</button>
         <button id="signupBtn" onclick="showAuthForm('signup')">Sign Up</button>
         <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
+        <button id="editProfileBtn" onclick="showEditProfileModal()" style="display: none;">Edit Profile</button>
     </div>
 
     <div id="authForm" class="auth-form" style="display: none;">
@@ -190,7 +378,37 @@
         <button id="authSubmitBtn" onclick="handleAuth()">Login</button>
     </div>
 
-    <h1>galactica discussion board.</h1>
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProfileModal()">&times;</span>
+            <h2>Edit Profile</h2>
+            <input type="text" id="editDisplayName" placeholder="Display Name">
+            <input type="text" id="editGithub" placeholder="GitHub Handle (optional)">
+            <input type="text" id="editTwitter" placeholder="Twitter Handle">
+            <input type="text" id="editLinkedin" placeholder="LinkedIn Handle (optional)">
+            <button class="save-changes-btn" onclick="updateProfile()">Save Changes</button>
+        </div>
+    </div>
+    <div id="deleteConfirmationModal" class="delete-confirmation-modal">
+        <div class="delete-confirmation-content">
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this post?</p>
+            <div class="delete-confirmation-buttons">
+                <button id="confirmDeleteButton" class="confirm-delete-button">Delete</button>
+                <button id="cancelDeleteButton" class="cancel-delete-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <h1>galactica discussion board</h1>
+
+    <p>follow these steps to contribute:</p>
+    <ol>
+        <li>first signup or login.</li>
+        <li>select a board from the list below.</li>
+        <li>read the threads or start a new one.</li>
+        <li>share your innovative ideas and engage in discussions.</li>
+    </ol>
 
     <div class="boards" id="boards">
         <!-- Boards will be dynamically loaded here -->
@@ -213,240 +431,468 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
-            authDomain: "galactica-f174c.firebaseapp.com",
-            projectId: "galactica-f174c",
-            storageBucket: "galactica-f174c.appspot.com",
-            messagingSenderId: "152146817639",
-            appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
-            measurementId: "G-T19QCVB3F1"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+    const firebaseConfig = {
+    apiKey: "AIzaSyCSY1onR4PO2nF4EtA9ZkHvJb8KHEI9M8g",
+    authDomain: "galactica-f174c.firebaseapp.com",
+    projectId: "galactica-f174c",
+    storageBucket: "galactica-f174c.appspot.com",
+    messagingSenderId: "152146817639",
+    appId: "1:152146817639:web:45110faf6d2c3649c5dac2",
+    measurementId: "G-T19QCVB3F1"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
 
-        let currentBoard = '';
-        let currentUser = null;
+let currentBoard = '';
+let currentUser = null;
 
-        const boards = [
-            { id: 'quantum-frontiers', name: 'Quantum Frontiers' },
-            { id: 'ai-ethics', name: 'AI Ethics & Society' },
-            { id: 'space-colonization', name: 'Space Colonization' },
-            { id: 'biotech-revolution', name: 'Biotech Revolution' },
-            { id: 'future-energy', name: 'Future of Energy' },
-            { id: 'transhuman-tech', name: 'Transhuman Technologies' },
-            { id: 'nanotech-innovations', name: 'Nanotech Innovations' },
-            { id: 'virtual-reality-worlds', name: 'Virtual Reality Worlds' }
-        ];
+const boards = [
+    { id: 'general-discussion', name: 'general-discussion' },
+    { id: 'research-ideas', name: 'ideas' },
+    { id: 'collaborative-projects', name: 'collaborative-projects' },
+];
 
-        function loadBoards() {
-            const boardsDiv = document.getElementById('boards');
-            boards.forEach(board => {
-                const boardElement = document.createElement('div');
-                boardElement.className = 'board';
-                boardElement.innerHTML = `<h3>${board.name}</h3>`;
-                boardElement.addEventListener('click', () => loadThreads(board.id, board.name));
-                boardsDiv.appendChild(boardElement);
-            });
-        }
+function loadBoards() {
+    const boardsDiv = document.getElementById('boards');
+    boardsDiv.innerHTML = '';
+    boards.forEach(board => {
+        const boardElement = document.createElement('div');
+        boardElement.className = 'board';
+        boardElement.innerHTML = `<h3>${board.name}</h3>`;
+        boardElement.addEventListener('click', () => loadThreads(board.id, board.name));
+        boardsDiv.appendChild(boardElement);
+    });
+}
 
-        function loadThreads(boardId, boardName) {
-            currentBoard = boardId;
-            document.getElementById('current-board-title').textContent = boardName;
-            document.getElementById('boards').style.display = 'none';
-            document.getElementById('threads').style.display = 'block';
-            document.getElementById('post-form').style.display = currentUser ? 'block' : 'none';
+function loadThreads(boardId, boardName) {
+    currentBoard = boardId;
+    document.getElementById('current-board-title').textContent = boardName;
+    document.getElementById('boards').style.display = 'none';
+    document.getElementById('threads').style.display = 'block';
+    document.getElementById('post-form').style.display = currentUser ? 'block' : 'none';
 
-            const threadsDiv = document.getElementById('thread-list');
-            threadsDiv.innerHTML = '<p>Loading threads...</p>';
+    const threadsDiv = document.getElementById('thread-list');
+    threadsDiv.innerHTML = '<p>Loading threads...</p>';
 
-            db.collection(boardId).orderBy('timestamp', 'desc').limit(20).get().then((querySnapshot) => {
-                threadsDiv.innerHTML = '';
-                querySnapshot.forEach((doc) => {
-                    const thread = doc.data();
-                    const threadElement = document.createElement('div');
-                    threadElement.className = 'thread';
-                    threadElement.innerHTML = `
-                <div class="thread-header">${thread.displayName} ${new Date(thread.timestamp.toDate()).toLocaleString()} No.${doc.id}</div>
+    db.collection(boardId).orderBy('timestamp', 'desc').limit(20).get().then((querySnapshot) => {
+        threadsDiv.innerHTML = '';
+        querySnapshot.forEach((doc) => {
+            const thread = doc.data();
+            const threadElement = document.createElement('div');
+            threadElement.className = 'thread';
+            threadElement.innerHTML = `
+                <div class="thread-header">Posted by ${thread.displayName} <span>${new Date(thread.timestamp.toDate()).toLocaleString()}</span></div>
                 <div class="user-info">
-                    ${thread.github ? `GitHub: ${thread.github} | ` : ''}
-                    ${thread.twitter ? `Twitter: ${thread.twitter} | ` : ''}
-                    ${thread.linkedin ? `LinkedIn: ${thread.linkedin}` : ''}
+                    ${thread.github ? `<a href="https://github.com/${thread.github}" target="_blank">[GitHub]</a>` : ''}
+                    ${thread.twitter ? `<a href="https://twitter.com/${thread.twitter}" target="_blank">[Twitter]</a>` : ''}
+                    ${thread.linkedin ? `<a href="https://www.linkedin.com/in/${thread.linkedin}" target="_blank">[LinkedIn]</a>` : ''}
                 </div>
-                <div class="thread-content">${thread.content}</div>
-                ${currentUser ? `<button class="reply-button" onclick="showReplyForm('${doc.id}')">Reply</button>` : ''}
+                <div class="thread-content">${formatContent(thread.content)}</div>
+               ${currentUser ? `<button class="reply-button" onclick="showReplyForm('${doc.id}')">Reply</button>` : ''}
+            ${currentUser && currentUser.uid === thread.userId ? `
+                <button class="edit-button" onclick="editThread('${doc.id}')">Edit</button>
+                <button class="delete-button" onclick="deleteThread('${doc.id}')">Delete</button>
+            ` : ''}
                 <div id="replies-${doc.id}"></div>
-                <div id="reply-form-${doc.id}" style="display: none;">
-                    <textarea id="reply-content-${doc.id}" placeholder="Your reply"></textarea>
+                <div id="reply-form-${doc.id}" class="reply-form hidden">
+                    <textarea id="reply-content-${doc.id}" placeholder="Your reply" class="edit-textarea"></textarea>
                     <button onclick="postReply('${doc.id}')">Post Reply</button>
                 </div>
             `;
-                    threadsDiv.appendChild(threadElement);
-                    loadReplies(doc.id);
-                });
-            });
-        }
-
-        function loadReplies(threadId) {
-            db.collection(currentBoard).doc(threadId).collection('replies').orderBy('timestamp', 'asc').get().then((querySnapshot) => {
-                const repliesDiv = document.getElementById(`replies-${threadId}`);
-                querySnapshot.forEach((doc) => {
-                    const reply = doc.data();
-                    const replyElement = document.createElement('div');
-                    replyElement.className = 'reply';
-                    replyElement.innerHTML = `
-                <div class="reply-header">${reply.displayName} ${new Date(reply.timestamp.toDate()).toLocaleString()} No.${doc.id}</div>
-                <div class="user-info">
-                    ${reply.github ? `GitHub: ${reply.github} | ` : ''}
-                    ${reply.twitter ? `Twitter: ${reply.twitter} | ` : ''}
-                    ${reply.linkedin ? `LinkedIn: ${reply.linkedin}` : ''}
-                </div>
-                <div class="reply-content">${reply.content}</div>
-            `;
-                    repliesDiv.appendChild(replyElement);
-                });
-            });
-        }
-
-        function showReplyForm(threadId) {
-            document.getElementById(`reply-form-${threadId}`).style.display = 'block';
-        }
-
-        function postReply(threadId) {
-            const content = document.getElementById(`reply-content-${threadId}`).value;
-            if (content && currentUser) {
-                db.collection(currentBoard).doc(threadId).collection('replies').add({
-                    content: content,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    displayName: currentUser.displayName,
-                    github: currentUser.github,
-                    twitter: currentUser.twitter,
-                    linkedin: currentUser.linkedin
-                }).then(() => {
-                    loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
-                });
-            }
-        }
-
-        document.getElementById('postThread').addEventListener('click', () => {
-            const content = document.getElementById('threadContent').value;
-            if (content && currentUser) {
-                db.collection(currentBoard).add({
-                    content: content,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    displayName: currentUser.displayName,
-                    github: currentUser.github,
-                    twitter: currentUser.twitter,
-                    linkedin: currentUser.linkedin
-                }).then(() => {
-                    loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
-                    document.getElementById('threadContent').value = '';
-                });
-            }
+            threadsDiv.appendChild(threadElement);
+            loadReplies(doc.id);
         });
+    }).catch(error => {
+        console.error("Error loading threads: ", error);
+        threadsDiv.innerHTML = '<p>Error loading threads. Please try again later.</p>';
+    });
+}
 
-        function showAuthForm(type) {
-            const authForm = document.getElementById('authForm');
-            const authFormTitle = document.getElementById('authFormTitle');
-            const authSubmitBtn = document.getElementById('authSubmitBtn');
-            const authDisplayName = document.getElementById('authDisplayName');
-            const authGithub = document.getElementById('authGithub');
-            const authTwitter = document.getElementById('authTwitter');
-            const authLinkedin = document.getElementById('authLinkedin');
+function loadReplies(threadId, parentReplyId = null) {
+    const repliesQuery = db.collection(currentBoard).doc(threadId).collection('replies')
+        .where('parentReplyId', '==', parentReplyId)
+        .orderBy('timestamp', 'asc');
 
-            authForm.style.display = 'block';
-            if (type === 'login') {
-                authFormTitle.textContent = 'Login';
-                authSubmitBtn.textContent = 'Login';
-                authDisplayName.style.display = 'none';
-                authGithub.style.display = 'none';
-                authTwitter.style.display = 'none';
-                authLinkedin.style.display = 'none';
-            } else {
-                authFormTitle.textContent = 'Sign Up';
-                authSubmitBtn.textContent = 'Sign Up';
-                authDisplayName.style.display = 'block';
-                authGithub.style.display = 'block';
-                authTwitter.style.display = 'block';
-                authLinkedin.style.display = 'block';
-            }
+    repliesQuery.get().then((querySnapshot) => {
+        const repliesDiv = document.getElementById(`replies-${threadId}`);
+        if (!parentReplyId) {
+            repliesDiv.innerHTML = '';
         }
+        querySnapshot.forEach((doc) => {
+            const reply = doc.data();
+            const replyElement = document.createElement('div');
+            replyElement.className = parentReplyId ? 'reply nested-reply' : 'reply';
+            replyElement.innerHTML = `
+                <div class="reply-header">Posted by ${reply.displayName} <span>${new Date(reply.timestamp.toDate()).toLocaleString()}</span></div>
+                <div class="user-info">
+                    ${reply.github ? `<a href="https://github.com/${reply.github}" target="_blank">[GitHub]</a>` : ''}
+                    ${reply.twitter ? `<a href="https://twitter.com/${reply.twitter}" target="_blank">[Twitter]</a>` : ''}
+                    ${reply.linkedin ? `<a href="https://www.linkedin.com/in/${reply.linkedin}" target="_blank">[LinkedIn]</a>` : ''}
+                </div>
+                <div class="reply-content">${formatContent(reply.content)}</div>
+                 ${currentUser ? `<button class="reply-button" onclick="showReplyForm('${threadId}', '${doc.id}')">Reply</button>` : ''}
+            ${currentUser && currentUser.uid === reply.userId ? `
+                <button class="edit-button" onclick="editReply('${threadId}', '${doc.id}')">Edit</button>
+                <button class="delete-button" onclick="deleteReply('${threadId}', '${doc.id}')">Delete</button>
+            ` : ''}
+                <div id="nested-replies-${doc.id}"></div>
+                <div id="reply-form-${doc.id}" class="reply-form hidden">
+                    <textarea id="reply-content-${doc.id}" placeholder="Your reply" class="edit-textarea"></textarea>
+                    <button onclick="postReply('${threadId}', '${doc.id}')">Post Reply</button>
+                </div>
+            `;
+            repliesDiv.appendChild(replyElement);
+            loadReplies(threadId, doc.id);
+        });
+    }).catch(error => {
+        console.error("Error loading replies: ", error);
+    });
+}
 
-        function handleAuth() {
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            const displayName = document.getElementById('authDisplayName').value;
-            const github = document.getElementById('authGithub').value;
-            const twitter = document.getElementById('authTwitter').value;
-            const linkedin = document.getElementById('authLinkedin').value;
+function formatContent(content) {
+    content = content.replace(/\n/g, '<br>');
+    content = content.replace(/^&gt;(.+)$/gm, '<span class="quote">&gt;$1</span>');
+    content = content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+    return content;
+}
 
-            if (document.getElementById('authSubmitBtn').textContent === 'Login') {
-                auth.signInWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        // Logged in successfully
-                        document.getElementById('authForm').style.display = 'none';
-                    })
-                    .catch((error) => {
-                        alert('Login failed: ' + error.message);
-                    });
-            } else {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        // Signed up successfully
-                        return userCredential.user.updateProfile({
-                            displayName: displayName
-                        }).then(() => {
-                            // Update custom claims
-                            return db.collection('users').doc(userCredential.user.uid).set({
-                                displayName: displayName,
-                                github: github,
-                                twitter: twitter,
-                                linkedin: linkedin
-                            });
-                        });
-                    })
-                    .then(() => {
-                        document.getElementById('authForm').style.display = 'none';
-                    })
-                    .catch((error) => {
-                        alert('Sign up failed: ' + error.message);
-                    });
-            }
+function showReplyForm(threadId, parentReplyId = null) {
+    const formId = parentReplyId ? `reply-form-${parentReplyId}` : `reply-form-${threadId}`;
+    document.getElementById(formId).classList.remove('hidden');
+}
+
+function postReply(threadId, parentReplyId = null) {
+    const contentId = parentReplyId ? `reply-content-${parentReplyId}` : `reply-content-${threadId}`;
+    const content = document.getElementById(contentId).value;
+    if (content && currentUser) {
+        db.collection(currentBoard).doc(threadId).collection('replies').add({
+            content: content,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            displayName: currentUser.displayName,
+            userId: currentUser.uid,
+            github: currentUser.github,
+            twitter: currentUser.twitter,
+            linkedin: currentUser.linkedin,
+            parentReplyId: parentReplyId
+        }).then(() => {
+            loadReplies(threadId, parentReplyId);
+            document.getElementById(contentId).value = '';
+            document.getElementById(`reply-form-${parentReplyId || threadId}`).classList.add('hidden');
+        }).catch(error => {
+            console.error("Error posting reply: ", error);
+            alert("Failed to post reply. Please try again.");
+        });
+    }
+}
+
+function postThread() {
+    const content = document.getElementById('threadContent').value;
+    if (content && currentUser) {
+        db.collection(currentBoard).add({
+            content: content,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            displayName: currentUser.displayName,
+            userId: currentUser.uid,
+            github: currentUser.github,
+            twitter: currentUser.twitter,
+            linkedin: currentUser.linkedin
+        }).then(() => {
+            loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+            document.getElementById('threadContent').value = '';
+        }).catch(error => {
+            console.error("Error posting thread: ", error);
+            alert("Failed to post thread. Please try again.");
+        });
+    }
+}
+
+function editThread(threadId) {
+    const threadElement = document.querySelector(`#thread-list .thread:has(#replies-${threadId})`);
+    const contentElement = threadElement.querySelector('.thread-content');
+    const currentContent = contentElement.innerHTML.replace(/<br>/g, '\n').replace(/&gt;/g, '>');
+
+    contentElement.innerHTML = `
+        <textarea id="edit-thread-${threadId}" class="edit-textarea">${currentContent}</textarea>
+        <div class="edit-buttons">
+            <button class="save-button" onclick="saveThreadEdit('${threadId}')">Save</button>
+            <button class="cancel-button" onclick="cancelThreadEdit('${threadId}', '${escapeHtml(currentContent)}')">Cancel</button>
+        </div>
+    `;
+}
+function saveThreadEdit(threadId) {
+    const newContent = document.getElementById(`edit-thread-${threadId}`).value;
+    db.collection(currentBoard).doc(threadId).update({
+        content: newContent,
+        editedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+    }).catch((error) => {
+        console.error("Error updating thread: ", error);
+        alert("Failed to update thread. Please try again.");
+    });
+}
+
+function cancelThreadEdit(threadId, originalContent) {
+    const threadElement = document.querySelector(`#thread-list .thread:has(#replies-${threadId})`);
+    const contentElement = threadElement.querySelector('.thread-content');
+    contentElement.innerHTML = formatContent(originalContent);
+}
+
+function deleteThread(threadId) {
+    showDeleteConfirmationModal(threadId);
+}
+function showDeleteConfirmationModal(threadId) {
+    const modal = document.getElementById('deleteConfirmationModal');
+    modal.style.display = 'block';
+
+    document.getElementById('confirmDeleteButton').onclick = function() {
+        confirmDeleteThread(threadId);
+    };
+
+    document.getElementById('cancelDeleteButton').onclick = function() {
+        closeDeleteConfirmationModal();
+    };
+}
+function closeDeleteConfirmationModal() {
+    const modal = document.getElementById('deleteConfirmationModal');
+    modal.style.display = 'none';
+}
+function confirmDeleteThread(threadId) {
+    db.collection(currentBoard).doc(threadId).delete().then(() => {
+        loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+        closeDeleteConfirmationModal();
+    }).catch((error) => {
+        console.error("Error deleting thread: ", error);
+        alert("Failed to delete thread. Please try again.");
+        closeDeleteConfirmationModal();
+    });
+}
+
+function editReply(threadId, replyId) {
+    const replyElement = document.querySelector(`#replies-${threadId} .reply:has(button[onclick*="${replyId}"])`);
+    const contentElement = replyElement.querySelector('.reply-content');
+    const currentContent = contentElement.innerHTML.replace(/<br>/g, '\n').replace(/&gt;/g, '>');
+
+    contentElement.innerHTML = `
+        <textarea id="edit-reply-${replyId}" class="edit-textarea">${currentContent}</textarea>
+        <div class="edit-buttons">
+            <button class="save-button" onclick="saveReplyEdit('${threadId}', '${replyId}')">Save</button>
+            <button class="cancel-button" onclick="cancelReplyEdit('${threadId}', '${replyId}', '${escapeHtml(currentContent)}')">Cancel</button>
+        </div>
+    `;
+}
+
+function saveReplyEdit(threadId, replyId) {
+    const newContent = document.getElementById(`edit-reply-${replyId}`).value;
+    db.collection(currentBoard).doc(threadId).collection('replies').doc(replyId).update({
+        content: newContent,
+        editedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        loadReplies(threadId);
+    }).catch((error) => {
+        console.error("Error updating reply: ", error);
+        alert("Failed to update reply. Please try again.");
+    });
+}
+
+function cancelReplyEdit(threadId, replyId, originalContent) {
+    const replyElement = document.querySelector(`#replies-${threadId} .reply:has(button[onclick*="${replyId}"])`);
+    const contentElement = replyElement.querySelector('.reply-content');
+    contentElement.innerHTML = formatContent(originalContent);
+}
+
+function deleteReply(threadId, replyId) {
+    showDeleteConfirmationModal(threadId, replyId);
+}
+function showDeleteConfirmationModal(threadId, replyId = null) {
+    const modal = document.getElementById('deleteConfirmationModal');
+    modal.style.display = 'block';
+
+    document.getElementById('confirmDeleteButton').onclick = function() {
+        if (replyId) {
+            confirmDeleteReply(threadId, replyId);
+        } else {
+            confirmDeleteThread(threadId);
         }
+    };
+    document.getElementById('cancelDeleteButton').onclick = function() {
+        closeDeleteConfirmationModal();
+    };
+}
+function confirmDeleteReply(threadId, replyId) {
+    db.collection(currentBoard).doc(threadId).collection('replies').doc(replyId).delete().then(() => {
+        loadReplies(threadId);
+        closeDeleteConfirmationModal();
+    }).catch((error) => {
+        console.error("Error deleting reply: ", error);
+        alert("Failed to delete reply. Please try again.");
+        closeDeleteConfirmationModal();
+    });
+}
 
-        function logout() {
-            auth.signOut().then(() => {
-                // Sign-out successful.
-                currentUser = null;
-                updateUIForAuth();
-            }).catch((error) => {
-                // An error happened.
-                console.error('Logout failed:', error);
+function showAuthForm(type) {
+    const authForm = document.getElementById('authForm');
+    const authFormTitle = document.getElementById('authFormTitle');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authDisplayName = document.getElementById('authDisplayName');
+    const authGithub = document.getElementById('authGithub');
+    const authTwitter = document.getElementById('authTwitter');
+    const authLinkedin = document.getElementById('authLinkedin');
+
+    authForm.style.display = 'block';
+    if (type === 'login') {
+        authFormTitle.textContent = 'Login';
+        authSubmitBtn.textContent = 'Login';
+        authDisplayName.style.display = 'none';
+        authGithub.style.display = 'none';
+        authTwitter.style.display = 'none';
+        authLinkedin.style.display = 'none';
+    } else {
+        authFormTitle.textContent = 'Sign Up';
+        authSubmitBtn.textContent = 'Sign Up';
+        authDisplayName.style.display = 'block';
+        authGithub.style.display = 'block';
+        authTwitter.style.display = 'block';
+        authLinkedin.style.display = 'block';
+    }
+}
+
+function handleAuth() {
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    const displayName = document.getElementById('authDisplayName').value;
+    const github = document.getElementById('authGithub').value;
+    const twitter = document.getElementById('authTwitter').value;
+    const linkedin = document.getElementById('authLinkedin').value;
+
+    if (document.getElementById('authSubmitBtn').textContent === 'Login') {
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                document.getElementById('authForm').style.display = 'none';
+            })
+            .catch((error) => {
+                alert('Login failed: ' + error.message);
             });
+    } else {
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                return userCredential.user.updateProfile({
+                    displayName: displayName
+                }).then(() => {
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        displayName: displayName,
+                        github: github.replace(/^https?:\/\/github\.com\//, ''),
+                        twitter: twitter.replace(/^https?:\/\/twitter\.com\//, ''),
+                        linkedin: linkedin.replace(/^https?:\/\/www\.linkedin\.com\/in\//, '')
+                    });
+                });
+            })
+            .then(() => {
+                document.getElementById('authForm').style.display = 'none';
+            })
+            .catch((error) => {
+                alert('Sign up failed: ' + error.message);
+            });
+    }
+}
+
+function logout() {
+    auth.signOut().then(() => {
+        currentUser = null;
+        updateUIForAuth();
+    }).catch((error) => {
+        console.error('Logout failed:', error);
+    });
+}
+
+function updateUIForAuth() {
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const postForm = document.getElementById('post-form');
+
+    if (currentUser) {
+        loginBtn.style.display = 'none';
+        signupBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        editProfileBtn.style.display = 'inline-block';
+        postForm.style.display = 'block';
+    } else {
+        loginBtn.style.display = 'inline-block';
+        signupBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        editProfileBtn.style.display = 'none';
+        postForm.style.display = 'none';
+    }
+}
+
+function showEditProfileModal() {
+    db.collection('users').doc(currentUser.uid).get().then((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            document.getElementById('editDisplayName').value = data.displayName;
+            document.getElementById('editGithub').value = data.github;
+            document.getElementById('editTwitter').value = data.twitter;
+            document.getElementById('editLinkedin').value = data.linkedin;
         }
+        document.getElementById('editProfileModal').style.display = 'block';
+    }).catch((error) => {
+        console.error("Error fetching user data:", error);
+    });
+}
 
-        function updateUIForAuth() {
-            const loginBtn = document.getElementById('loginBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const postForm = document.getElementById('post-form');
+function closeEditProfileModal() {
+    document.getElementById('editProfileModal').style.display = 'none';
+}
 
-            if (currentUser) {
-                loginBtn.style.display = 'none';
-                signupBtn.style.display = 'none';
-                logoutBtn.style.display = 'inline-block';
-                postForm.style.display = 'block';
+function updateProfile() {
+    const newDisplayName = document.getElementById('editDisplayName').value;
+    const newGithub = document.getElementById('editGithub').value.replace(/^https?:\/\/github\.com\//, '');
+    const newTwitter = document.getElementById('editTwitter').value.replace(/^https?:\/\/twitter\.com\//, '');
+    const newLinkedin = document.getElementById('editLinkedin').value.replace(/^https?:\/\/www\.linkedin\.com\/in\//, '');
+
+    db.collection('users').doc(currentUser.uid).update({
+        displayName: newDisplayName,
+        github: newGithub,
+        twitter: newTwitter,
+        linkedin: newLinkedin
+    }).then(() => {
+        currentUser.displayName = newDisplayName;
+        currentUser.github = newGithub;
+        currentUser.twitter = newTwitter;
+        currentUser.linkedin = newLinkedin;
+        closeEditProfileModal();
+        loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+    }).catch((error) => {
+        console.error('Profile update failed:', error);
+        alert('Failed to update profile. Please try again.');
+    });
+}
+
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        db.collection('users').doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                currentUser = {
+                    uid: user.uid,
+                    displayName: data.displayName,
+                    github: data.github,
+                    twitter: data.twitter,
+                    linkedin: data.linkedin
+                };
             } else {
-                loginBtn.style.display = 'inline-block';
-                signupBtn.style.display = 'inline-block';
-                logoutBtn.style.display = 'none';
-                postForm.style.display = 'none';
-            }
-        }
-
-        auth.onAuthStateChanged((user) => {
-            if (user) {
                 currentUser = {
                     uid: user.uid,
                     displayName: user.displayName,
@@ -454,25 +900,27 @@
                     twitter: '',
                     linkedin: ''
                 };
-
-                db.collection('users').doc(user.uid).get().then((doc) => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        currentUser.github = data.github;
-                        currentUser.twitter = data.twitter;
-                        currentUser.linkedin = data.linkedin;
-                    }
-                    updateUIForAuth();
-                });
-            } else {
-                currentUser = null;
-                updateUIForAuth();
+            }
+            updateUIForAuth();
+            // Reload threads if we're on a board page
+            if (currentBoard) {
+                loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
             }
         });
+    } else {
+        currentUser = null;
+        updateUIForAuth();
+        // Reload threads if we're on a board page
+        if (currentBoard) {
+            loadThreads(currentBoard, document.getElementById('current-board-title').textContent);
+        }
+    }
+});
+// Initial load
+loadBoards();
 
-        // Initial load
-        loadBoards();
-
+// Event listener for posting threads
+document.getElementById('postThread').addEventListener('click', postThread);
     </script>
 </body>
 
